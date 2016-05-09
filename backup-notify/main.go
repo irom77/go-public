@@ -48,14 +48,16 @@ func main() {
 		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
 		os.Exit(0)
 	}
+	//Templete email
+	computername, _ := os.Hostname()
 	m := gomail.NewMessage()
-	m.SetHeader("From", "gopher@mycomputer")
+	m.SetHeader("From", "gopher@" + computername)
 	m.SetHeader("To", *notify)
-	m.SetHeader("Subject", "backup-notify")
+	m.SetHeader("Subject", os.Args[0])
 	m.SetBody("text/html", "Hello <b>me</b>!")
 	m.SetBody("text/plain", "Hello!")
-	flag.Parse();
-	fmt.Println(*namecontains, *backupdir, *backupsize)
+
+	fmt.Println(*namecontains, *backupdir, *backupsize, computername, *notify)
 	files, err := ioutil.ReadDir(*backupdir)
 	if err != nil {
 		log.Fatal(err)
@@ -65,15 +67,15 @@ func main() {
 		if strings.Contains(file.Name(), *namecontains ) {
 			fmt.Println(file.Name(), file.Size())
 			if int64(file.Size()) < *backupsize {
-				fmt.Printf("File %s size is less than %d",
+				fmt.Printf("File %s size is less than %d\n",
 					file.Name(), *backupsize)
 			}
 		}
 
 	}
-
 	// Email me using relay
 	if *notify != "" {
+		fmt.Printf("Sending email notification to %s:\n", *notify)
 		d := gomail.Dialer{Host: "relay", Port: 25}
 		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 		if err := d.DialAndSend(m); err != nil {
