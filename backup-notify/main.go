@@ -19,17 +19,14 @@ import (
 	"crypto/tls"
 	//"text/template"
 	"html/template"
-	"encoding/json"
+	//"encoding/json"
+	"bytes"
 )
 
 var (
 	Version = "No Version Provided"
 	BuildTime = ""
 )
-type File struct {
-	FileName string
-	FileSize int64
-}
 //backup-notify -v to check version, -h to get help
 func main() {
 	flag.Usage = func() {
@@ -60,7 +57,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	type File struct {
+		FileName string
+		FileSize int64
+	}
 	var Files []File
 	for _, file := range files {
 		if strings.Contains(file.Name(), *namecontains ) {
@@ -71,32 +71,41 @@ func main() {
 			}*/
 		}
 	}
-	const tmpl = `
+	/*const tmpl = `
 	File : {{.FileName | printf "%40s"}} Size: {{.FileSize | printf "%8d"}}`
 	t := template.Must(template.New("file names and sizes").Parse(tmpl))
 	for _, f := range Files {
 		err := t.Execute(os.Stdout, f)
 		if err != nil { panic(err) }
-	}
-	/*const tmplhtml = `
-	{{range .Files}}
-	file {{.}}
+	}*/
+	const tmplhtml = `
+	<table>
+	<tr style='text-align: left'>
+  	<th>File</th>
+  	<th>Size</th>
+	</tr>
+	{{range .}}
+	<tr>
+	<td>file {{.FileName}}</td>
+	<td>size {{.FileSize}}</td>
 	{{end}}
+	</table>
 	`
-	t := template.Must(template.New("file names and sizes - html table").Parse(tmplhtml))
-	err = t.Execute(os.Stdout, Files)
-	if err != nil { panic(err) }*/
+	buf := new(bytes.Buffer)
+	t := template.Must(template.New("html table").Parse(tmplhtml))
+	err = t.Execute(buf, Files)
+	if err != nil { panic(err) }
 
-	output, _ := json.Marshal(Files)
+	//output, _ := json.Marshal(Files)
 	// Email me using relay
 	if *notify != "" {
 		//Template email
 		m := gomail.NewMessage()
 		m.SetHeader("From", "gopher@" + computername)
-		m.SetHeader("To", *notify + " " + *backupdir)
-		m.SetHeader("Subject", os.Args[0])
-		//m.SetBody("text/html", "Hello <b>me</b>!")
-		m.SetBody("text/plain", string(output))
+		m.SetHeader("To", *notify)
+		m.SetHeader("Subject", os.Args[0] + " " + *backupdir)
+		m.SetBody("text/html", buf.String())
+		//m.SetBody("text/plain", string(output))
 		fmt.Printf("\nSending email notification to %s:\n", *notify)
 		d := gomail.Dialer{Host: "relay", Port: 25}
 		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
