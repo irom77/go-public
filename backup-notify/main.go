@@ -24,13 +24,13 @@ var (
 	Version = "No Version Provided"
 	BuildTime = ""
 )
-//backup-notify -v to check version
+//backup-notify -v to check version, -h to get help
 func main() {
-	/*flag.Usage = func() {
+	flag.Usage = func() {
+		fmt.Printf("Copyright 2016 @IrekRomaniuk. All rights reserved.\n")
 		fmt.Printf("Usage of %s:\n", os.Args[0])
-		fmt.Printf("Example\n")
 		flag.PrintDefaults()
-	}*/
+	}
 	//go run -ldflags "-X main.Version=1.0.1" github.com\irom77\go-public\backup-notify
 	/*go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1"
 	github.com\irom77\go-public\backup-notify*/
@@ -41,6 +41,8 @@ func main() {
 	//Run program with file size i.e. -size="200000" , default is 9000000
 	backupsize := flag.Int64("size", 9000000, "Minimum file size")
 	version := flag.Bool("v", false, "Prints current version")
+	//Run program with email i.e. -notify="me@somewhere" , default is to not email
+	notify := flag.String("email", "", "Whom to notify")
 	flag.Parse()
 	if *version {
 		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
@@ -48,7 +50,7 @@ func main() {
 	}
 	m := gomail.NewMessage()
 	m.SetHeader("From", "gopher@mycomputer")
-	m.SetHeader("To", "iromaniuk@commonwealth.com")
+	m.SetHeader("To", *notify)
 	m.SetHeader("Subject", "backup-notify")
 	m.SetBody("text/html", "Hello <b>me</b>!")
 	m.SetBody("text/plain", "Hello!")
@@ -70,10 +72,12 @@ func main() {
 
 	}
 
-	// Send the email to me using relay
-	d := gomail.Dialer{Host: "relay", Port: 25}
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-	if err := d.DialAndSend(m); err != nil {
-		panic(err)
+	// Email me using relay
+	if *notify != "" {
+		d := gomail.Dialer{Host: "relay", Port: 25}
+		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+		if err := d.DialAndSend(m); err != nil {
+			panic(err)
+		}
 	}
 }
