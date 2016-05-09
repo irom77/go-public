@@ -1,3 +1,10 @@
+// Copyright 2016 @IrekRomaniuk. All rights reserved.
+/*
+	List files in given directory path and name pattern to verify that size is greater than minimum,
+	then send notification by email (using 'relay')
+	EXAMPLE using default name pattern, minimum size and email address
+	$ ./backup-notify -path="/mnt/ftpbackup/ftpuser"
+*/
 package main
 
 import (
@@ -11,8 +18,8 @@ import (
 	"crypto/tls"
 	//"html/template"
 )
-//List files with given name pattern and directory path to verify that size is greater than minimum, then send notification by email
-//Run i.e. $ ./backup-notify -path="/mnt/ftpbackup/ftpuser"
+
+//backup-notify
 func main() {
 	//Run program with path name i.e. -path="C:/" , default is current directory
 	backupdir := flag.String("path", ".", "Directory to look for files")
