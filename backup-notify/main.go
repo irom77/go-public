@@ -11,7 +11,7 @@ import (
 	"crypto/tls"
 	//"html/template"
 )
-//List files with given name pattern and directory path to verify that size is greater than minimum
+//List files with given name pattern and directory path to verify that size is greater than minimum, then send notification by email
 //Run i.e. $ ./backup-notify -path="/mnt/ftpbackup/ftpuser"
 func main() {
 	//Run program with path name i.e. -path="C:/" , default is current directory
