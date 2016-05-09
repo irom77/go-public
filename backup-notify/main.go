@@ -3,7 +3,8 @@
 	List files in given directory path and name pattern to verify that size is greater than minimum,
 	then send notification by email (using 'relay')
 	EXAMPLE using default name pattern, minimum size and email address
-	$ ./backup-notify -path="/mnt/ftpbackup/ftpuser"
+	$ ./backup-notify -h
+	$ ./backup-notify -path="/mnt/ftpbackup/ftpuser" -name=txt
 */
 package main
 
@@ -25,21 +26,26 @@ var (
 )
 //backup-notify -v to check version
 func main() {
+	/*flag.Usage = func() {
+		fmt.Printf("Usage of %s:\n", os.Args[0])
+		fmt.Printf("Example\n")
+		flag.PrintDefaults()
+	}*/
 	//go run -ldflags "-X main.Version=1.0.1" github.com\irom77\go-public\backup-notify
 	/*go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1"
 	github.com\irom77\go-public\backup-notify*/
-	version := flag.Bool("v", false, "Prints current version")
-	flag.Parse()
-	if *version {
-		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
-		os.Exit(0)
-	}
 	//Run program with path name i.e. -path="C:/" , default is current directory
 	backupdir := flag.String("path", ".", "Directory to look for files")
 	//Run program with file name i.e. -name="mdsbk.tgz" , default is mdsbk.tgz
 	namecontains := flag.String("name", "mdsbk.tgz", "File name or part of it")
 	//Run program with file size i.e. -size="200000" , default is 9000000
 	backupsize := flag.Int64("size", 9000000, "Minimum file size")
+	version := flag.Bool("v", false, "Prints current version")
+	flag.Parse()
+	if *version {
+		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
+		os.Exit(0)
+	}
 	m := gomail.NewMessage()
 	m.SetHeader("From", "gopher@mycomputer")
 	m.SetHeader("To", "iromaniuk@commonwealth.com")
