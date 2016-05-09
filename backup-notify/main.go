@@ -17,13 +17,19 @@ import (
 	"strings"
 	"gopkg.in/gomail.v2"
 	"crypto/tls"
-	//"html/template"
+	//"text/template"
+	"html/template"
+	"encoding/json"
 )
 
 var (
 	Version = "No Version Provided"
 	BuildTime = ""
 )
+type File struct {
+	FileName string
+	FileSize int64
+}
 //backup-notify -v to check version, -h to get help
 func main() {
 	flag.Usage = func() {
@@ -48,34 +54,50 @@ func main() {
 		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
 		os.Exit(0)
 	}
-	//Templete email
 	computername, _ := os.Hostname()
-	m := gomail.NewMessage()
-	m.SetHeader("From", "gopher@" + computername)
-	m.SetHeader("To", *notify)
-	m.SetHeader("Subject", os.Args[0])
-	m.SetBody("text/html", "Hello <b>me</b>!")
-	m.SetBody("text/plain", "Hello!")
-
 	fmt.Println(*namecontains, *backupdir, *backupsize, computername, *notify)
 	files, err := ioutil.ReadDir(*backupdir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	var Files []File
 	for _, file := range files {
 		if strings.Contains(file.Name(), *namecontains ) {
-			fmt.Println(file.Name(), file.Size())
-			if int64(file.Size()) < *backupsize {
+			Files =  append(Files,File{file.Name(),file.Size()})
+			/*if int64(file.Size()) < *backupsize {
 				fmt.Printf("File %s size is less than %d\n",
 					file.Name(), *backupsize)
-			}
+			}*/
 		}
-
 	}
+	const tmpl = `
+	File : {{.FileName | printf "%40s"}} Size: {{.FileSize | printf "%8d"}}`
+	t := template.Must(template.New("file names and sizes").Parse(tmpl))
+	for _, f := range Files {
+		err := t.Execute(os.Stdout, f)
+		if err != nil { panic(err) }
+	}
+	/*const tmplhtml = `
+	{{range .Files}}
+	file {{.}}
+	{{end}}
+	`
+	t := template.Must(template.New("file names and sizes - html table").Parse(tmplhtml))
+	err = t.Execute(os.Stdout, Files)
+	if err != nil { panic(err) }*/
+
+	output, _ := json.Marshal(Files)
 	// Email me using relay
 	if *notify != "" {
-		fmt.Printf("Sending email notification to %s:\n", *notify)
+		//Template email
+		m := gomail.NewMessage()
+		m.SetHeader("From", "gopher@" + computername)
+		m.SetHeader("To", *notify + " " + *backupdir)
+		m.SetHeader("Subject", os.Args[0])
+		//m.SetBody("text/html", "Hello <b>me</b>!")
+		m.SetBody("text/plain", string(output))
+		fmt.Printf("\nSending email notification to %s:\n", *notify)
 		d := gomail.Dialer{Host: "relay", Port: 25}
 		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 		if err := d.DialAndSend(m); err != nil {
