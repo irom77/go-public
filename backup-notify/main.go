@@ -21,6 +21,8 @@ import (
 	"html/template"
 	//"encoding/json"
 	"bytes"
+	"regexp"
+	"strconv"
 )
 
 var (
@@ -65,20 +67,22 @@ func main() {
 	for _, file := range files {
 		if strings.Contains(file.Name(), *namecontains ) {
 			Files =  append(Files,File{file.Name(),file.Size()})
-			/*if int64(file.Size()) < *backupsize {
-				fmt.Printf("File %s size is less than %d\n",
-					file.Name(), *backupsize)
-			}*/
 		}
 	}
-	/*const tmpl = `
-	File : {{.FileName | printf "%40s"}} Size: {{.FileSize | printf "%8d"}}`
-	t := template.Must(template.New("file names and sizes").Parse(tmpl))
-	for _, f := range Files {
-		err := t.Execute(os.Stdout, f)
+	const tmpl = `
+	{{range .}}
+	File : {{.FileName | printf "%40s"}} Size: {{.FileSize | printf "%8d"}}
+	{{end}}`
+		t := template.Must(template.New("file names and sizes").Parse(tmpl))
+		err = t.Execute(os.Stdout, Files)
 		if err != nil { panic(err) }
-	}*/
-	const tmplhtml = `
+
+	var tmplhtml = `
+	<style>
+	table, th, td {
+   	border: 1px solid black;
+	}
+	</style>
 	<table>
 	<tr style='text-align: left'>
   	<th>File</th>
@@ -86,26 +90,39 @@ func main() {
 	</tr>
 	{{range .}}
 	<tr>
-	<td>file {{.FileName}}</td>
-	<td>size {{.FileSize}}</td>
+	<td>{{.FileName}}</td>
+	{{ if lt .FileSize -MINSIZE- }}
+	<td style="color:red;">{{.FileSize}}</td>
+	{{else}}
+	<td>{{.FileSize}}</td>
+	{{end}}
 	{{end}}
 	</table>
 	`
+	var body, missing string
 	buf := new(bytes.Buffer)
-	t := template.Must(template.New("html table").Parse(tmplhtml))
-	err = t.Execute(buf, Files)
-	if err != nil { panic(err) }
-
-	//output, _ := json.Marshal(Files)
+	if len(Files) <= 0 {
+		body= `<h1 style="color:red;">MISSING FILES</h1>`
+		missing = " MISSING "
+	} else {
+		re, _ := regexp.Compile("-MINSIZE-")
+		tmplhtml = re.ReplaceAllString(tmplhtml, strconv.FormatInt(*backupsize, 10))
+		th := template.Must(template.New("html table").Parse(tmplhtml))
+		err = th.Execute(buf, Files)
+		if err != nil {
+			panic(err)
+		}
+		body = buf.String()
+		missing = " "
+	}
 	// Email me using relay
 	if *notify != "" {
 		//Template email
 		m := gomail.NewMessage()
 		m.SetHeader("From", "gopher@" + computername)
 		m.SetHeader("To", *notify)
-		m.SetHeader("Subject", os.Args[0] + " " + *backupdir)
-		m.SetBody("text/html", buf.String())
-		//m.SetBody("text/plain", string(output))
+		m.SetHeader("Subject", os.Args[0] + missing + *backupdir)
+		m.SetBody("text/html", body)
 		fmt.Printf("\nSending email notification to %s:\n", *notify)
 		d := gomail.Dialer{Host: "relay", Port: 25}
 		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
