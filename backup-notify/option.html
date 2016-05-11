@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solve the issue in JS</title>
+</head>
+<body>
+<!--http://stackoverflow.com/questions/37141991/how-to-use-arithmetic-operator-in-golang-html-template?noredirect=1#comment61824377_37141991-->
+<head lang="en">
+    <title>123</title>
+</head>
+
+<body>
+<table>
+    <tbody>
+    <tr>
+        <td>123</td>
+        <td>1234</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    s = document.getElementsByTagName('td');
+    for (i = 0; i < s.length; i++) {
+        if (parseInt(s[i].innerText) > 123) {
+            s[i].color = '#fff';
+        }
+    }
+</script>
+</body>
+</body>
+</html>
