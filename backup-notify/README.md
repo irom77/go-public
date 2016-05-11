@@ -1,5 +1,5 @@
 ### Backup Notify
-##### List files in given directory path and name pattern to verify that size is greater than minimum,then send notification by email (using 'relay')
+List files in given directory path and name pattern to verify that size is greater than minimum,then send notification by email (using 'relay')
 ![Example of email notification](backup-notify.JPG)
 ```
 $ backup-notify -h
