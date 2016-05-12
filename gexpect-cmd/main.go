@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"github.com/ThomasRooney/gexpect"
+	"github.com/ThomasRooney/gexpect"
 	"log"
 	"flag"
 	"fmt"
