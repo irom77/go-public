@@ -10,7 +10,7 @@ import (
 
 
 var (
-    USER = flag.String("user", "manager", "ssh username")
+    USER = flag.String("user", "manager", "ssh username") // or os.Getenv("USER") or os.Getenv("USERNAME")
     HOST = flag.String("host", "127.0.0.1", "ssh server name")
     PASS = flag.String("pass", "", "ssh password")
     CMD =  flag.String("cmd", "", "command to run")
@@ -29,11 +29,12 @@ func main() {
 		Auth: []ssh.AuthMethod{
 			ssh.Password(*PASS),
 		},
-		Config: ssh.Config{
+		/*Config: ssh.Config{
 			//Ciphers: []string{"3des-cbc", "blowfish-cbc", "arcfour"},
 			//Ciphers: ssh.AllSupportedCiphers(), // include cbc ciphers
+			//or edit GOPATH/src/golang.org/x/crypto/ssh/common.go
 
-		},
+		},*/
 	}
 	client, err := ssh.Dial("tcp", *HOST + ":22", config)
 	if err != nil {
