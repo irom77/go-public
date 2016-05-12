@@ -4,9 +4,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	"fmt"
 	"bytes"
-	//"os"
 	"flag"
-	//"io/ioutil"
 	//"log"
 )
 
@@ -67,7 +65,20 @@ func main() {
 		panic("Failed to create session: " + err.Error())
 	}
 	defer session.Close()
-
+	// Set up terminal modes
+	/*modes := ssh.TerminalModes{
+		ssh.ECHO:          0,     // disable echoing
+		ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
+		ssh.TTY_OP_OSPEED: 14400, // output speed = 14.4kbaud
+	}*/
+	// Request pseudo terminal
+	/*if err := session.RequestPty("xterm", 80, 40, modes); err != nil {
+		log.Fatalf("request for pseudo terminal failed: %s", err)
+	}*/
+	// Start remote shell
+	/*if err := session.Shell(); err != nil {
+		log.Fatalf("failed to start shell: %s", err)
+	}*/
 	// Once a Session is created, you can execute a single command on
 	// the remote side using the Run method.
 	var b bytes.Buffer

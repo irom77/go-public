@@ -1,34 +1,32 @@
 package main
 
-import (
-	"github.com/ThomasRooney/gexpect"
-	"log"
-	"flag"
-	"fmt"
-)
+import "github.com/jamesharr/expect"
 
-var (
-	USER = flag.String("user", "manager", "ssh username") // or os.Getenv("USER") or os.Getenv("USERNAME")
-	HOST = flag.String("host", "127.0.0.1", "ssh server name")
-	PASS = flag.String("pass", "", "ssh password")
-	CMD =  flag.String("cmd", "", "command to run")
-)
 
-func init() { flag.Parse() }
+func usage() { // OMIT
+exp, err := expect.Spawn( "ssh", "localhost" )
+if err != nil { panic(err) }
+defer exp.Close()
 
-func main() {
-log.Printf("Testing ssh... ")
-fmt.Printf("%s %s %s %s", *USER, *PASS, *HOST, *CMD)
-child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
-if err != nil {
-panic(err)
-}
+exp.SetTimeout(5 * time.Second) // HL
 
-child.Expect("password:")
-child.SendLine(*PASS)
-child.Expect("#")
-child.SendLine(*CMD)
-child.Expect("#")
-child.SendLine("logout")
-log.Printf("\nSuccess\n")
-}
+exp.Expect(`[Pp]assword:`) // HL
+exp.Sendln("terriblepassword")
+
+exp.Expect(`\$`) // HL
+exp.Sendln("ls -lh")
+exp.Expect("ls -lh") // Cut out remote-echo
+
+m, _ := exp.Expect(`(?m)^.*\$`) // HL
+fmt.Println("Directory Listing:", m.Before)
+
+exp.Sendln("exit") // HL
+exp.ExpectEOF() // HL
+} // OMIT
+
+func problem() { // OMIT
+myPty := pty.Start(exec.Command("ssh", "localhost"))
+buffer := make([]byte, 4096)
+bytesRead, err := myPty.Read(buffer) // HL
+buffer = buffer[0:bytesRead] // Chop buffer slice to only contain what was read
+} // OMIT
