@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/ThomasRooney/gexpect"
+	//"github.com/ThomasRooney/gexpect"
 	"log"
 	"flag"
+	"fmt"
 )
 
 var (
@@ -17,8 +18,8 @@ func init() { flag.Parse() }
 
 func main() {
 log.Printf("Testing ssh... ")
-log.Printf(*USER, *PASS, *HOST, *CMD)
-/*child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
+fmt.Printf("%s %s %s %s", *USER, *PASS, *HOST, *CMD)
+child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
 if err != nil {
 panic(err)
 }
@@ -29,5 +30,5 @@ child.Expect("#")
 child.SendLine(*CMD)
 child.Expect("#")
 child.SendLine("logout")
-log.Printf("Success\n")*/
+log.Printf("Success\n")
 }
