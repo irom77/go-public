@@ -18,7 +18,7 @@ func init() { flag.Parse() }
 func main() {
 log.Printf("Testing ssh... ")
 log.Printf(*USER, *PASS, *HOST, *CMD)
-child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
+/*child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
 if err != nil {
 panic(err)
 }
@@ -29,5 +29,5 @@ child.Expect("#")
 child.SendLine(*CMD)
 child.Expect("#")
 child.SendLine("logout")
-log.Printf("Success\n")
+log.Printf("Success\n")*/
 }
