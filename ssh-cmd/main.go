@@ -6,6 +6,8 @@ import (
 	"bytes"
 	//"os"
 	"flag"
+	"io/ioutil"
+"log"
 )
 
 
@@ -24,10 +26,27 @@ func main() {
 	//
 	// To authenticate with the remote server you must pass at least one
 	// implementation of AuthMethod via the Auth field in ClientConfig.
+	// A public key may be used to authenticate against the remote
+	// server by using an unencrypted PEM-encoded private key file.
+	//
+	// If you have an encrypted private key, the crypto/x509 package
+	// can be used to decrypt it.
+	key, err := ioutil.ReadFile("/home/irek/.ssh/id_rsa")
+	if err != nil {
+		log.Fatalf("unable to read private key: %v", err)
+	}
+
+	// Create the Signer for this private key.
+	signer, err := ssh.ParsePrivateKey(key)
+	if err != nil {
+		log.Fatalf("unable to parse private key: %v", err)
+	}
 	config := &ssh.ClientConfig{
 		User: *USER,
 		Auth: []ssh.AuthMethod{
 			ssh.Password(*PASS),
+			// Use the PublicKeys method for remote authentication.
+			ssh.PublicKeys(signer),
 		},
 		/*Config: ssh.Config{
 			//Ciphers: []string{"3des-cbc", "blowfish-cbc", "arcfour"},
