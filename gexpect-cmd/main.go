@@ -30,5 +30,5 @@ child.Expect("#")
 child.SendLine(*CMD)
 child.Expect("#")
 child.SendLine("logout")
-log.Printf("Success\n")
+log.Printf("\nSuccess\n")
 }
