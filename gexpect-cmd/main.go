@@ -19,7 +19,7 @@ func init() { flag.Parse() }
 func main() {
 log.Printf("Testing ssh... ")
 fmt.Printf("%s %s %s %s", *USER, *PASS, *HOST, *CMD)
-child, err := gexpect.Spawn("ssh " + "manager@10.29.1.65")
+child, err := gexpect.Spawn("ssh" + "manager@10.29.1.65")
 if err != nil {
 panic(err)
 }
