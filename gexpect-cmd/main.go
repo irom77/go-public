@@ -11,7 +11,7 @@ var (
 	USER = flag.String("user", "manager", "ssh username") // or os.Getenv("USER") or os.Getenv("USERNAME")
 	HOST = flag.String("host", "127.0.0.1", "ssh server name")
 	PASS = flag.String("pass", "", "ssh password")
-	//CMD =  flag.String("cmd", "", "command to run")
+	CMD =  flag.String("cmd", "", "command to run")
 )
 
 func init() { flag.Parse() }
@@ -30,9 +30,9 @@ func main() {
 	ssh.Expect(PROMPT) // Wait for prompt
 
 	// Run a command
-	ssh.SendLn("ls -lh")
+	ssh.SendLn(*CMD)
 	match, err := ssh.Expect(PROMPT) // Wait for prompt
-	fmt.Println("ls -lh output:", match.Before)
+	fmt.Println("command output:", match.Before)
 
 	// Hit a timeout
 	ssh.SendLn("sleep 60") // This will cause a timeout
