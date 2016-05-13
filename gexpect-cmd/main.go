@@ -35,14 +35,14 @@ func main() {
 	fmt.Println("command output:", match.Before)
 
 	// Hit a timeout
-	ssh.SendLn("sleep 10") // This will cause a timeout
+	//ssh.SendLn("sleep 10") // This will cause a timeout
 	match, err = ssh.Expect(PROMPT) // This will timeout
 	if err == expect.ErrTimeout {
-		fmt.Println("Session timed out. Like we were expecting.\n")
+		fmt.Println("Session timed out.\n")
 	}
 
 	// Wait for EOF
-	ssh.SendLn("exit")
+	ssh.SendLn("logout")
 	ssh.ExpectEOF()
 }
 
