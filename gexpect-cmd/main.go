@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/ThomasRooney/gexpect"
-	"log"
-	"flag"
+	"github.com/jamesharr/expect"
+	"time"
 	"fmt"
+	"flag"
 )
 
 var (
@@ -17,18 +17,33 @@ var (
 func init() { flag.Parse() }
 
 func main() {
-log.Printf("Testing ssh... ")
-fmt.Printf("%s %s %s %s", *USER, *PASS, *HOST, *CMD)
-child, err := gexpect.Spawn("ssh " + "manager@10.29.1.65")
-if err != nil {
-panic(err)
+	// Spawn an expect process
+	ssh, err := expect.Spawn("ssh", "manager@10.29.1.65")
+	ssh.SetTimeout(10 * time.Second)
+	const PROMPT = `#` // `(?m)[^$]*$`
+
+
+	// Login
+	ssh.Expect(`[Pp]assword:`)
+	ssh.SendMasked(*PASS) // SendMasked hides from logging
+	ssh.Send("\n")
+	ssh.Expect(PROMPT) // Wait for prompt
+
+	// Run a command
+	ssh.SendLn(*CMD)
+	match, err := ssh.Expect(PROMPT) // Wait for prompt
+	fmt.Println("command output:", match.Before)
+
+	// Hit a timeout
+	ssh.SendLn("sleep 60") // This will cause a timeout
+	match, err = ssh.Expect(PROMPT) // This will timeout
+	if err == expect.ErrTimeout {
+		fmt.Println("Session timed out. Like we were expecting.\n")
+	}
+
+	// Wait for EOF
+	ssh.SendLn("exit")
+	ssh.ExpectEOF()
 }
 
-child.Expect("assword:")
-child.SendLine(*PASS)
-child.Expect("#")
-child.SendLine(*CMD)
-child.Expect("#")
-child.SendLine("logout")
-//log.Printf("\nSuccess\n")
-}
+
