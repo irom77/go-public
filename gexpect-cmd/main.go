@@ -20,7 +20,7 @@ func main() {
 	// Spawn an expect process
 	ssh, err := expect.Spawn("ssh", "manager@10.29.1.65")
 	ssh.SetTimeout(5 * time.Second)
-	const PROMPT = `#` // `(?m)[^$]*$`
+	const PROMPT = `AppDirector#` // `(?m)[^$]*$`
 
 	// Login
 	ssh.Expect(`[Pp]assword:`)
@@ -35,10 +35,10 @@ func main() {
 
 	// Hit a timeout
 	//ssh.SendLn("sleep 10") // This will cause a timeout
-	match, err = ssh.Expect(PROMPT) // This will timeout
-	if err == expect.ErrTimeout {
+	_, err = ssh.Expect(PROMPT) // This will timeout
+	/*if err == expect.ErrTimeout {
 		fmt.Println("Session timed out.\n")
-	}
+	}*/
 
 	// Wait for EOF
 	ssh.SendLn("logout")
