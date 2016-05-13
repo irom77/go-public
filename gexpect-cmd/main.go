@@ -26,7 +26,7 @@ func main() {
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*PASS) // SendMasked hides from logging
 	ssh.Send("\n")
-	ssh.Expect(PROMPT) // Wait for prompt
+	ssh.Expect(*PROMPT) // Wait for prompt
 
 	// Run a command
 	ssh.SendLn(*CMD)
