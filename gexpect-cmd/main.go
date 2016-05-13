@@ -19,9 +19,8 @@ func init() { flag.Parse() }
 func main() {
 	// Spawn an expect process
 	ssh, err := expect.Spawn("ssh", "manager@10.29.1.65")
-	ssh.SetTimeout(10 * time.Second)
+	ssh.SetTimeout(5 * time.Second)
 	const PROMPT = `#` // `(?m)[^$]*$`
-
 
 	// Login
 	ssh.Expect(`[Pp]assword:`)
