@@ -18,7 +18,7 @@ func init() { flag.Parse() }
 
 func main() {
 	// Spawn an expect process
-	ssh, err := expect.Spawn("ssh", "manager@10.29.1.65")
+	ssh, _ := expect.Spawn("ssh", "manager@10.29.1.65")
 	ssh.SetTimeout(5 * time.Second)
 	const PROMPT = `AppDirector#` // `(?m)[^$]*$`
 
@@ -31,7 +31,7 @@ func main() {
 	// Run a command
 	ssh.SendLn(*CMD)
 	match, _ := ssh.Expect(PROMPT) // Wait for prompt
-	fmt.Println("command output:", match.Before)
+	fmt.Println(match.Before)
 
 	// Hit a timeout
 	//ssh.SendLn("sleep 10") // This will cause a timeout
