@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	USER = flag.String("user", "manager", "ssh username") // or os.Getenv("USER") or os.Getenv("USERNAME")
-	HOST = flag.String("host", "127.0.0.1", "ssh server name")
+	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
+	PROMPT = flag.String("prompt", "#", "ssh prompt")
 	PASS = flag.String("pass", "", "ssh password")
 	CMD =  flag.String("cmd", "", "command to run")
 )
@@ -18,9 +18,9 @@ func init() { flag.Parse() }
 
 func main() {
 	// Spawn an expect process
-	ssh, _ := expect.Spawn("ssh", "manager@10.29.1.65")
+	ssh, _ := expect.Spawn("ssh", *USERHOST)
 	ssh.SetTimeout(5 * time.Second)
-	const PROMPT = `AppDirector#` // `(?m)[^$]*$`
+	//const PROMPT = `#` // `(?m)[^$]*$`
 
 	// Login
 	ssh.Expect(`[Pp]assword:`)
@@ -30,7 +30,7 @@ func main() {
 
 	// Run a command
 	ssh.SendLn(*CMD)
-	match, _ := ssh.Expect(PROMPT) // Wait for prompt
+	match, _ := ssh.Expect(*PROMPT) // Wait for prompt
 	fmt.Println(match.Before)
 
 	// Hit a timeout
@@ -39,7 +39,6 @@ func main() {
 	/*if err == expect.ErrTimeout {
 		fmt.Println("Session timed out.\n")
 	}*/
-
 	ssh.Close();
 	// Wait for EOF
 	/*ssh.SendLn("logout")
