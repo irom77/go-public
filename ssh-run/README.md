@@ -14,15 +14,3 @@ Usage of ssh-cmd:
 ```
 
 
-Radware Radware AppDirector throughput to Influx
-
-See example, the throughput is last number of the command output
-
-```
-AppDirector#system last-sec-total-input
-
-Total input on all ports in the last second (in Mbps): 137 
-
-```
-
-Tested on AppDirector Global v2.14.08DL
