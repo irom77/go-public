@@ -68,6 +68,7 @@ func main() {
 	pongChan := make(chan Pong, len(hosts))
 	doneChan := make(chan []Pong)
 
+	fmt.Println(len(hosts), concurrentMax)
 	for i := 0; i < concurrentMax; i++ {
 		go ping(pingChan, pongChan)
 	}
@@ -80,7 +81,6 @@ func main() {
 	}
 
 	alives := <-doneChan
-	fmt.Println(len(hosts), concurrentMax)
 	pp.Println(alives)
 }
 
