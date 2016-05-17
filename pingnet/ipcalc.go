@@ -81,6 +81,6 @@ func main() {
 	}
 
 	alives := <-doneChan
-	pp.Println(alives)
+	pp.Println(len(alives))
 }
 
