@@ -26,7 +26,7 @@ func (Addr *IP) Randoms(n int ) {
 }
 
 //ping IP target address and keep result (Replied and ms)
-func ping(Addr *IP) {
+func pingip(Addr *IP) {
 	for
 
 	output, err := exec.Command("ping", "-c", "2", "8.8.8.8").Output()
