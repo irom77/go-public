@@ -15,6 +15,7 @@ var (
 	PASS = flag.String("pass", "", "clish password")
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
+        version = flag.Bool("v", false, "Prints current version")
 )
 
 var (
@@ -29,6 +30,10 @@ func init() {
 		flag.PrintDefaults()
 	}
 	flag.Parse()
+	if *version {
+		fmt.Printf("App Version: %s\nBuild Time : %s\n", Version, BuildTime)
+		os.Exit(0)
+	}
 }
 
 func main() {
