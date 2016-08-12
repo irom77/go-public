@@ -9,8 +9,8 @@ goex-gaia -user="user@IP" -pass='password' -cmd="ip addr" -expert='password'
 goex-gaia -user="user@IP" -pass='password' -cmd="show software-version" 
 goex-gaia -user="user@IP" -pass='password' <- default cmd is 'fw stat'
 
-To read 'userhost' from file  
-
+To read 'userhost' from file: 
+```
 $ cat goex-gaia.sh
 #!/bin/bash
 date
@@ -18,8 +18,10 @@ cat pinglist.txt |  while read output
 do
     USERHOST="$1@$output"
     echo $USERHOST
-    ./goex-gaia -user="$USERHOST" -pass="$2"
+    ./goex-gaia -user=$USERHOST -pass='password'
 done
+$./goex-gaia.sh admin
+```
 
 
 ######To bypass Host Key Checking
