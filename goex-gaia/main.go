@@ -11,7 +11,7 @@ var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
 	PROMPT1 = flag.String("clish prompt", ">", "prompt1")
 	PROMPT2 = flag.String("expert prompt ", "#", "prompt2")
-	PASS = flag.String("pass", "", "ssh password")
+	PASS = flag.String("pass", "", "clish password")
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "uptime", "command to run")
 )
@@ -36,14 +36,14 @@ func main() {
 		ssh.SendMasked(*EXPERT)
 		ssh.Send("\n")
 		// Run a command
-		ssh.Expect(*PROMPT2) // Wait for prompt
+		ssh.Expect(*PROMPT2) // Wait for expert prompt
 	}
 	ssh.SendLn(*CMD)
 	if *EXPERT != "" {
-		match, _ := ssh.Expect(*PROMPT2) // Wait for prompt
+		match, _ := ssh.Expect(*PROMPT1) // Wait for clish prompt
 		fmt.Println(match.Before)
 	} else {
-		match, _ := ssh.Expect(*PROMPT1)
+		match, _ := ssh.Expect(*PROMPT1) // Wait for expert prompt
 		fmt.Println(match.Before)
 	} // Wait for prompt}
 
