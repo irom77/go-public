@@ -17,7 +17,7 @@ var (
 	CMD =  flag.String("cmd", "fw stat", "command to run")
         version = flag.Bool("v", false, "Prints current version")
 )
-
+//go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1" github.com/irom77/go-public/goex-gaia
 var (
 	Version = "No Version Provided"
 	BuildTime = ""

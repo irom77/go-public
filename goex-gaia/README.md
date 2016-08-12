@@ -1,17 +1,9 @@
-### gexpect to run commands on targets from file
+### go expect to run commands on Checkpoint Gaia
 
 ##### EXAMPLE
 
-goex-gaia -user="user@IP" -pass='password' -cmd="fw tab -t string_dictionary_table –x -y;fw fetch" -expert='password'
-
-See example, the throughput is last number of the command output
-
-```
-
-
-```
-
-Tested on 
+goex-gaia -user="user@IP" -pass='password' -cmd="df -kh" -expert='password'
+goex-gaia -user="user@IP" -pass='password' -cmd="show software-version" 
 
 ######To bypass Host Key Checking
 	$ cat /etc/ssh/ssh_config | grep StrictHostKeyChecking
