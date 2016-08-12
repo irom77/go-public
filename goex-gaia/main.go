@@ -28,9 +28,10 @@ func main() {
 	ssh.Send("\n")
 	ssh.Expect(*PROMPT) // Wait for prompt
 	// Enter Expert mode
-	ssh.SendLn("expert\n")
+	ssh.Send("expert\n")
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*EXPERT)
+	ssh.Send("\n")
 	// Run a command
 	ssh.Expect("#") // Wait for prompt
 	ssh.SendLn(*CMD)
