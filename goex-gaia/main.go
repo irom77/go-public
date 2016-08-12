@@ -28,22 +28,25 @@ func main() {
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*PASS) // SendMasked hides from logging
 	ssh.Send("\n")
-	PROMPT := ""
-	PROMPT = PROMPT1
-	ssh.Expect(*PROMPT) // Wait for prompt
+	ssh.Expect(*PROMPT1) // Wait for prompt
 	// Enter Expert mode
 	if *EXPERT != "" {
-		PROMPT := PROMPT2
 		ssh.SendLn("expert\n")
 		ssh.Expect(`[Pp]assword:`)
 		ssh.SendMasked(*EXPERT)
 		ssh.Send("\n")
 		// Run a command
-		ssh.Expect(*PROMPT) // Wait for prompt
+		ssh.Expect(*PROMPT2) // Wait for prompt
 	}
 	ssh.SendLn(*CMD)
-	match, _ := ssh.Expect(*PROMPT) // Wait for prompt
-	fmt.Println(match.Before)
+	if *EXPERT != "" {
+		match, _ := ssh.Expect(*PROMPT2) // Wait for prompt
+		fmt.Println(match.Before)
+	} else {
+		match, _ := ssh.Expect(*PROMPT1)
+		fmt.Println(match.Before)
+	} // Wait for prompt}
+
 
 	// Hit a timeout
 	//ssh.SendLn("sleep 10") // This will cause a timeout
