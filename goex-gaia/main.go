@@ -39,11 +39,11 @@ func main() {
 		ssh.Expect(*PROMPT2) // Wait for expert prompt
 	}
 	ssh.SendLn(*CMD)
-	if *EXPERT == "" {
-		match, _ := ssh.Expect(*PROMPT2) // Wait for clish prompt
+	if *EXPERT != "" {
+		match, _ := ssh.Expect(*PROMPT2) // Wait for expert prompt
 		fmt.Println(match.Before)
 	} else {
-		match, _ := ssh.Expect(*PROMPT1) // Wait for expert prompt
+		match, _ := ssh.Expect(*PROMPT1) // Wait for clish prompt
 		fmt.Println(match.Before)
 	} // Wait for prompt}
 
