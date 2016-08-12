@@ -11,7 +11,7 @@ var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
 	PROMPT = flag.String("prompt", "#", "ssh prompt")
 	PASS = flag.String("pass", "", "ssh password")
-	EXPERT = flag.String("pass", "", "expert password")
+	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "", "command to run")
 )
 
