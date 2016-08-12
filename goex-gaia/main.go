@@ -5,6 +5,7 @@ import (
 	"time"
 	"fmt"
 	"flag"
+	"os"
 )
 
 var (
@@ -16,9 +17,22 @@ var (
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 )
 
-func init() { flag.Parse() }
+var (
+	Version = "No Version Provided"
+	BuildTime = ""
+)
+
+func init() {
+	flag.Usage = func() {
+		fmt.Printf("Copyright 2016 @IrekRomaniuk. All rights reserved.\n")
+		fmt.Printf("Usage of %s:\n", os.Args[0])
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+}
 
 func main() {
+
 	//fmt.Println(*USERHOST, *PASS, *PROMPT, *EXPERT, *CMD)
 	// Spawn an expect process
 	ssh, _ := expect.Spawn("ssh", *USERHOST)
