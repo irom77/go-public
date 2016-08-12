@@ -38,10 +38,10 @@ func main() {
 		ssh.SendMasked(*EXPERT)
 		ssh.Send("\n")
 		// Run a command
-		ssh.Expect(*PROMPT) // Wait for prompt
+		ssh.Expect(PROMPT) // Wait for prompt
 	}
 	ssh.SendLn(*CMD)
-	match, _ := ssh.Expect(*PROMPT) // Wait for prompt
+	match, _ := ssh.Expect(PROMPT) // Wait for prompt
 	fmt.Println(match.Before)
 
 	// Hit a timeout
