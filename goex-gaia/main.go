@@ -29,11 +29,11 @@ func main() {
 	ssh.SendMasked(*PASS) // SendMasked hides from logging
 	ssh.Send("\n")
 	PROMPT := ""
-	PROMPT = *PROMPT1
+	PROMPT = PROMPT1
 	ssh.Expect(*PROMPT) // Wait for prompt
 	// Enter Expert mode
 	if *EXPERT != "" {
-		PROMPT := *PROMPT2
+		PROMPT := PROMPT2
 		ssh.SendLn("expert\n")
 		ssh.Expect(`[Pp]assword:`)
 		ssh.SendMasked(*EXPERT)
