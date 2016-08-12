@@ -11,6 +11,7 @@ var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
 	PROMPT = flag.String("prompt", "#", "ssh prompt")
 	PASS = flag.String("pass", "", "ssh password")
+	EXPERT = flag.String("pass", "", "expert password")
 	CMD =  flag.String("cmd", "", "command to run")
 )
 
@@ -26,10 +27,14 @@ func main() {
 	ssh.SendMasked(*PASS) // SendMasked hides from logging
 	ssh.Send("\n")
 	ssh.Expect(*PROMPT) // Wait for prompt
-
+	// Enter Expert mode
+	ssh.SendLn("Expert\n")
+	ssh.Expect(`[Pp]assword:`)
+	ssh.SendMasked(*EXPERT)
 	// Run a command
+	ssh.Expect(*PROMPT) // Wait for prompt
 	ssh.SendLn(*CMD)
-	match, _ := ssh.Expect(*PROMPT) // Wait for prompt
+	match, _ := ssh.Expect("#") // Wait for prompt
 	fmt.Println(match.Before)
 
 	// Hit a timeout
