@@ -32,7 +32,7 @@ func main() {
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*EXPERT)
 	// Run a command
-	ssh.Expect(*PROMPT) // Wait for prompt
+	ssh.Expect("#") // Wait for prompt
 	ssh.SendLn(*CMD)
 	match, _ := ssh.Expect("#") // Wait for prompt
 	fmt.Println(match.Before)
