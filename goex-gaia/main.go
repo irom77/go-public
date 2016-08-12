@@ -13,7 +13,7 @@ var (
 	PROMPT2 = flag.String("expert prompt ", "#", "prompt2")
 	PASS = flag.String("pass", "", "ssh password")
 	EXPERT = flag.String("expert", "", "expert password")
-	CMD =  flag.String("cmd", "", "command to run")
+	CMD =  flag.String("cmd", "uptime", "command to run")
 )
 
 func init() { flag.Parse() }
