@@ -9,8 +9,8 @@ import (
 
 var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
-	PROMPT1 = flag.String("prompt", ">", "ssh prompt")
-	PROMPT2 = flag.String("prompt", "#", "ssh prompt")
+	PROMPT1 = flag.String("clish prompt", ">", "prompt1")
+	PROMPT2 = flag.String("expert prompt ", "#", "prompt2")
 	PASS = flag.String("pass", "", "ssh password")
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("uptime", "", "command to run")
