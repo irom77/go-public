@@ -31,7 +31,7 @@ func main() {
 	PROMPT := *PROMPT1
 	ssh.Expect(PROMPT) // Wait for prompt
 	// Enter Expert mode
-	if *EXPERT {
+	if *EXPERT != "" {
 		PROMPT := *PROMPT2
 		ssh.SendLn("expert\n")
 		ssh.Expect(`[Pp]assword:`)
