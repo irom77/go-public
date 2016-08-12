@@ -23,10 +23,12 @@ func main() {
 		fmt.Printf("Usage of %s:\n", os.Args[0])
 		flag.PrintDefaults()
 	}
-	user := flag.String("username", ".", "Username")
-	pass := flag.String("password", ".", "Password")
+	user := flag.String("username", "cisco", "Username")
+	pass := flag.String("password", "cisco", "Password")
 	notify := flag.String("email", "", "Who to send result to")
-	addr := flag.String("address", "8.8.8.9", "Destination to reach")
+	addr := flag.String("address", "8.8.8.8", "Destination to reach")
+	//switchaddress := flag.String("address", "", "Address of the switch")
+	//switchcommand := flag.String("command", "", "Command to run on the switch")
 	flag.Parse()
 	fmt.Println(*user, *pass, *notify, *addr)
 	//api := "https://pan1/esp/restapi.esp?type=op&cmd=%3Crequest%3E%3Ctech-support%3E%3Cdump%3E%3C/dump%3E%3C/tech-support%3E%3C/request%3E&key="

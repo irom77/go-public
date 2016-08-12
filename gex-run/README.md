@@ -16,3 +16,10 @@ Total input on all ports in the last second (in Mbps): 137
 ```
 
 Tested on AppDirector Global v2.14.08DL
+
+######To bypass Host Key Checking
+	$ cat /etc/ssh/ssh_config | grep StrictHostKeyChecking
+	StrictHostKeyChecking no
+	$ cat /etc/ssh/ssh_config | grep UserKnownHostsFile
+	UserKnownHostsFile=/dev/null
+	 
