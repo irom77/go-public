@@ -18,6 +18,7 @@ var (
 func init() { flag.Parse() }
 
 func main() {
+	fmt.Println(*USERHOST, *PASS, PROMPT, *EXPERT, *CMD)
 	// Spawn an expect process
 	ssh, _ := expect.Spawn("ssh", *USERHOST)
 	ssh.SetTimeout(5 * time.Second)
@@ -26,9 +27,9 @@ func main() {
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*PASS) // SendMasked hides from logging
 	ssh.Send("\n")
-	ssh.Expect(*PROMPT) // Wait for prompt
 	// Enter Expert mode
-	ssh.Send("expert\n")
+	ssh.Expect(*PROMPT) // Wait for prompt
+	ssh.SendLn("expert\n")
 	ssh.Expect(`[Pp]assword:`)
 	ssh.SendMasked(*EXPERT)
 	ssh.Send("\n")
