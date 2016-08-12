@@ -18,7 +18,7 @@ var (
 func init() { flag.Parse() }
 
 func main() {
-	fmt.Println(*USERHOST, *PASS, *PROMPT, *EXPERT, *CMD)
+	//fmt.Println(*USERHOST, *PASS, *PROMPT, *EXPERT, *CMD)
 	// Spawn an expect process
 	ssh, _ := expect.Spawn("ssh", *USERHOST)
 	ssh.SetTimeout(5 * time.Second)

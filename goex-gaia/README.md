@@ -2,7 +2,7 @@
 
 ##### EXAMPLE
 
-gex-run -user="user@IP" -pass='password' -cmd="show software-version" -prompt=">"
+goex-gaia -user="user@IP" -pass='password' -cmd="fw tab -t string_dictionary_table –x -y;fw fetch" -expert='password'
 
 See example, the throughput is last number of the command output
 
