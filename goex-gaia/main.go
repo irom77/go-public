@@ -59,7 +59,7 @@ func main() {
 		child.Expect(PROMPT)
 	}
 	child.SendLine(*CMD)
-	if *INTERACT {
+	if *INTERACT == true {
 		child.Interact()
 	}
 	if searchPattern != "" {
