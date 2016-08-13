@@ -15,6 +15,7 @@ var (
 	PASS = flag.String("pass", "", "clish password")
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
+	INTERACT = flag.Bool("interact", false, "interactive mode")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -57,7 +58,9 @@ func main() {
 		log.Printf("Success\n")
 
 	}*/
-	//child.Interact()
+	if INTERACT {
+		child.Interact()
+	}
 	child.Close()
 
 
