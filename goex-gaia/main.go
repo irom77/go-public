@@ -46,7 +46,13 @@ func main() {
 	child.SendLine(*PASS)
 	child.Expect(*PROMPT1)
 	child.SendLine(*CMD)
-	child.Interact()
-	log.Printf("Success\n")
-	child.Close()
+	match, _ := child.ExpectRegex("LAN8]")
+	if match {
+		log.Printf("Success\n")
+		child.Close()
+	} else {
+		child.Interact()
+	}
+
+
 }
