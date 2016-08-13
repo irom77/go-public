@@ -44,7 +44,7 @@ func main() {
 		panic(err)
 	}
 	child.Expect("password:")
-	child.SendLine(*PASS)
+	child.SendLine("n3w@y!n")
 	child.Expect(*PROMPT1)
 	child.SendLine(*CMD)
 	child.Interact()
