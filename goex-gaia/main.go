@@ -56,10 +56,6 @@ func main() {
 		child.Interact()
 	}
 	child.Expect(PROMPT)
-	match, _ := child.ExpectRegex("Done.")
-	if match {
-		log.Printf("Success\n")
-
 	}
 	child.Close()
 }
