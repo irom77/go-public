@@ -50,9 +50,6 @@ func main() {
 	if match {
 		log.Printf("Success\n")
 
-	} else {
-		log.Printf("Failure\n")
-
 	}
 	//child.Interact()
 	child.Close()
