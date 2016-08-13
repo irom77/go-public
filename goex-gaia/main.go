@@ -16,4 +16,5 @@ func main() {
 	child.SendLine("fw fetch")
 	child.Interact()
 	log.Printf("Success\n")
+	child.Close()
 }
