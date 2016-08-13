@@ -11,9 +11,9 @@ import (
 var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
 	PROMPT1 = flag.String("prompt1", ">", "clish prompt")
-	//PROMPT2 = flag.String("prompt2", "#", "expert prompt")
+	PROMPT2 = flag.String("prompt2", "#", "expert prompt")
 	PASS = flag.String("pass", "", "clish password")
-	//EXPERT = flag.String("expert", "", "expert password")
+	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 	version = flag.Bool("v", false, "Prints current version")
 )
