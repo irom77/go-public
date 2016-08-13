@@ -6,7 +6,6 @@ import (
 	"os"
 	"fmt"
 	"flag"
-	//"time"
 	"time"
 )
 
@@ -72,7 +71,10 @@ func main() {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 		}
 	} else {
-		child.Expect(PROMPT)
+		s, err := child.Expect(PROMPT)
+		if err != nil {
+			fmt.Println("Success %s\n", s)
+		}
 		child.Close()
 	}
 }
