@@ -6,6 +6,7 @@ import (
 	"os"
 	"fmt"
 	"flag"
+	"time"
 )
 
 var (
@@ -37,7 +38,7 @@ func init() {
 }
 
 func main() {
-	timeout := 10
+	timeout := time.Duration(10) * time.Second
 	searchPattern := `Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
