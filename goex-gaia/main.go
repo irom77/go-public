@@ -61,6 +61,6 @@ func main() {
 
 	fmt.Printf("searchPattern: %v, output: %v, result: %v", searchPattern, out, result)
 
-	child.Expect(PROMPT)
-	child.Close()
+	//child.Expect(PROMPT)
+	//child.Close()
 }
