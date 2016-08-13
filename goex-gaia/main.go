@@ -49,10 +49,13 @@ func main() {
 	match, _ := child.ExpectRegex("LAN8]")
 	if match {
 		log.Printf("Success\n")
-		child.Close()
+
 	} else {
-		child.Interact()
+		log.Printf("Failure\n")
+
 	}
+	//child.Interact()
+	child.Close()
 
 
 }
