@@ -55,6 +55,8 @@ func main() {
 	if *INTERACT {
 		child.Interact()
 	}
+	msg, _ := child.ReadLine()
+	fmt.PrintLn(msg)
 	child.Expect(PROMPT)
 	child.Close()
 }
