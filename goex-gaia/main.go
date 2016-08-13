@@ -51,10 +51,10 @@ func main() {
 		child.SendLine("expert")
 		child.Expect(*PROMPT2)
 	}
+	child.SendLine(*CMD)
 	if *INTERACT {
 		child.Interact()
 	}
-	child.SendLine(*CMD)
 	child.Expect(PROMPT)
 	/*match, _ := child.ExpectRegex("LAN8]")
 	if match {
