@@ -37,6 +37,8 @@ func init() {
 }
 
 func main() {
+	timeout := 10
+	searchPattern := `Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
 	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *CMD)
@@ -55,8 +57,10 @@ func main() {
 	if *INTERACT {
 		child.Interact()
 	}
-	msg, _ := child.ReadLine()
-	fmt.Println(msg)
+	result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+	if err == nil {
+		fmt.Printf("searchPattern: %v, output: %v, result: %v", searchPattern, out, result)
+	}
 	child.Expect(PROMPT)
 	child.Close()
 }
