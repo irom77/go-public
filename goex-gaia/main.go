@@ -10,8 +10,8 @@ import (
 
 var (
 	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
-	PROMPT1 = flag.String("clish prompt", ">", "prompt1")
-	//PROMPT2 = flag.String("expert prompt ", "#", "prompt2")
+	PROMPT1 = flag.String("prompt1", ">", "clish prompt")
+	//PROMPT2 = flag.String("prompt2", "#", "expert prompt")
 	PASS = flag.String("pass", "", "clish password")
 	//EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
@@ -36,7 +36,7 @@ func init() {
 }
 
 func main() {
-	log.Printf("Testing ssh... ")
+	log.Printf("Testing ssh... " + *USERHOST)
 
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
