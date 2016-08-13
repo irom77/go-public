@@ -73,8 +73,9 @@ func main() {
 	} else {
 		err := child.Expect(PROMPT)
 		if err != nil {
-			fmt.Println("Success\n")
-		}
+			fmt.Println("Completed")
+		} else {
+			fmt.Println("Error: %v", err)}
 		child.Close()
 	}
 }
