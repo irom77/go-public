@@ -45,7 +45,7 @@ func main() {
 	searchPattern := *SEARCH  //`Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
-	fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT)
+	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
