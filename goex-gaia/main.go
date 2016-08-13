@@ -56,6 +56,5 @@ func main() {
 		child.Interact()
 	}
 	child.Expect(PROMPT)
-	}
 	child.Close()
 }
