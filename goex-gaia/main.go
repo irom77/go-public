@@ -17,7 +17,7 @@ var (
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 	INTERACT = flag.Bool("interact", false, "interactive mode")
-	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
+	//TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
 	//SEARCH = flag.String("searchPattern", "", "Search pattern in output")
 	version = flag.Bool("v", false, "Prints current version")
 )
