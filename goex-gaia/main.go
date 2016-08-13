@@ -13,6 +13,6 @@ func main() {
 	child.Expect("password:")
 	child.SendLine("n3w@y!n")
 	child.Expect("#")
-	child.SendLine("fw stat")
+	child.SendLine("fw fetch")
 	log.Printf("Success\n")
 }
