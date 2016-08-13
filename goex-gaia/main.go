@@ -17,6 +17,7 @@ var (
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 	INTERACT = flag.Bool("interact", false, "interactive mode")
+	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -38,7 +39,7 @@ func init() {
 }
 
 func main() {
-	timeout := time.Duration(60) * time.Second
+	timeout := time.Duration(*TIMEOUT) * time.Second
 	searchPattern := `Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
@@ -60,7 +61,7 @@ func main() {
 	}
 	result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 
-	fmt.Printf("searchPattern: %v, output: %v, result: %v", searchPattern, out, result)
+	fmt.Printf("searchPattern: %v\n, output: %v\n, result: %v\n", searchPattern, out, result)
 
 	//child.Expect(PROMPT)
 	//child.Close()
