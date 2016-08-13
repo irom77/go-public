@@ -39,7 +39,7 @@ func main() {
 
 	log.Printf("ssh " + *USERHOST)
 
-	child, err := gexpect.Spawn("ssh " + *USERHOST)
+	child, err := gexpect.Spawn("ssh admin@10.199.107.1")
 	if err != nil {
 		panic(err)
 	}
