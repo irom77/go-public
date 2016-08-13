@@ -58,7 +58,7 @@ func main() {
 		log.Printf("Success\n")
 
 	}*/
-	if INTERACT {
+	if *INTERACT {
 		child.Interact()
 	}
 	child.Close()

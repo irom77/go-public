@@ -6,6 +6,7 @@ go get -u github.com/irom77/go-public/goex-gaia
 go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1" github.com/irom77/go-public/goex-gaia
 goex-gaia -user="user@IP" -pass='password' -cmd="df -kh" -expert='password'
 goex-gaia -user="user@IP" -pass='password' -cmd="ip addr" -expert='password'
+./goex-gaia -user='admin@10.199.107.1' -pass='password' -prompt1='#' -cmd='fw tab -t string_dictionary_table –x'
 goex-gaia -user="user@IP" -pass='password' -cmd="show software-version" 
 goex-gaia -user="user@IP" -pass='password' <- default cmd is 'fw stat'
 
