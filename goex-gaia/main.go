@@ -60,7 +60,9 @@ func main() {
 		child.Interact()
 	}
 	result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
-
+	if err != nil {
+		fmt.Printf("Error %v", err)
+	}
 	fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 
 	//child.Expect(PROMPT)
