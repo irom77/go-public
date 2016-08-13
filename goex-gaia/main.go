@@ -36,10 +36,9 @@ func init() {
 }
 
 func main() {
-
 	log.Printf("ssh " + *USERHOST)
-	fmt.Println(*USERHOST, *PASS, *PROMPT1, *CMD)
-	child, err := gexpect.Spawn("ssh admin@10.199.107.1")
+	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *CMD)
+	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
 	}
