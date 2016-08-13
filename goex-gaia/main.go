@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"flag"
 	//"time"
+	"time"
 )
 
 var (
@@ -17,8 +18,8 @@ var (
 	EXPERT = flag.String("expert", "", "expert password")
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 	INTERACT = flag.Bool("interact", false, "interactive mode")
-	//TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
-	//SEARCH = flag.String("searchPattern", "", "Search pattern in output")
+	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
+	SEARCH = flag.String("searchPattern", "", "Search pattern in output")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -40,8 +41,8 @@ func init() {
 }
 
 func main() {
-	//timeout := time.Duration(*TIMEOUT) * time.Second
-	//searchPattern := `Done.`
+	timeout := time.Duration(*TIMEOUT) * time.Second
+	searchPattern := `Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
 	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *INTERACT)
@@ -63,12 +64,12 @@ func main() {
 	if *INTERACT {
 		child.Interact()
 	}
-	/*result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+	result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 	if err != nil {
 		fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 	}
-	fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)*/
+	fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 
-	child.Expect(PROMPT)
-	child.Close()
+	//child.Expect(PROMPT)
+	//child.Close()
 }
