@@ -71,9 +71,9 @@ func main() {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 		}
 	} else {
-		s, err := child.Expect(PROMPT)
+		err := child.Expect(PROMPT)
 		if err != nil {
-			fmt.Println("Success %s\n", s)
+			fmt.Println("Success\n")
 		}
 		child.Close()
 	}
