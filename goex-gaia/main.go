@@ -60,6 +60,7 @@ func main() {
 	}
 	child.SendLine(*CMD)
 	if *INTERACT == true {
+		fmt.Println("Interact\n")
 		child.Interact()
 		child.Close()
 	}
