@@ -11,8 +11,9 @@ func main() {
 		panic(err)
 	}
 	child.Expect("password:")
-	child.SendLine("password")
+	child.SendLine("n3w@y!n")
 	child.Expect("#")
 	child.SendLine("fw fetch")
+	child.Interact()
 	log.Printf("Success\n")
 }
