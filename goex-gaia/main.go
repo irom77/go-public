@@ -43,7 +43,7 @@ func main() {
 	searchPattern := *SEARCH  //i.e.`Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
-	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
+	fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
@@ -61,6 +61,7 @@ func main() {
 	child.SendLine(*CMD)
 	if *INTERACT == true {
 		child.Interact()
+		child.Close()
 	}
 	if searchPattern != "" {
 		timeout := time.Duration(*TIMEOUT) * time.Second
