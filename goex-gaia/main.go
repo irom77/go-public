@@ -38,7 +38,7 @@ func init() {
 }
 
 func main() {
-	timeout := time.Duration(10) * time.Second
+	timeout := time.Duration(20) * time.Second
 	searchPattern := `Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
