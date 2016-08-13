@@ -55,7 +55,7 @@ func main() {
 	if *INTERACT {
 		child.Interact()
 	}
-	msg, _ := child.ReadLine()
+	msg, _ := child.ReadUntil("LAN8]")
 	fmt.Println(msg)
 	child.Expect(PROMPT)
 	child.Close()
