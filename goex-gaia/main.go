@@ -6,7 +6,7 @@ import (
 	"os"
 	"fmt"
 	"flag"
-	"time"
+	//"time"
 )
 
 var (
