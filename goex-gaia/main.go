@@ -36,7 +36,8 @@ func init() {
 }
 
 func main() {
-	log.Printf("Testing ssh... " + *USERHOST)
+
+	log.Printf("ssh " + *USERHOST)
 
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
