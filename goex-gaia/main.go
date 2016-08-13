@@ -15,7 +15,7 @@ func main() {
 	child.Expect("#")
 	child.SendLine("fw fetch")
 	child.Interact()
-	child.Sendline("exit")
+	child.SendLine("exit")
 	log.Printf("Success\n")
 	child.Close()
 }
