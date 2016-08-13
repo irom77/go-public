@@ -58,12 +58,12 @@ func main() {
 		child.SendLine(*EXPERT)
 		child.Expect(PROMPT)
 	}
-	child.SendLine(*CMD)
 	if *INTERACT == true {
 		fmt.Println("Interact\n")
 		child.Interact()
 		child.Close()
 	}
+	child.SendLine(*CMD)
 	if searchPattern != "" {
 		timeout := time.Duration(*TIMEOUT) * time.Second
 		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
