@@ -36,6 +36,7 @@ func init() {
 }
 
 func main() {
+	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
 	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *CMD)
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
@@ -44,14 +45,18 @@ func main() {
 	}
 	child.Expect("password:")
 	child.SendLine(*PASS)
-	child.Expect(*PROMPT1)
+	child.Expect(PROMPT)
+	/*if *EXPERT != "" {
+		child.SendLine("expert")
+		child.Expect(*PROMPT2)
+	}*/
 	child.SendLine(*CMD)
 	/*match, _ := child.ExpectRegex("LAN8]")
 	if match {
 		log.Printf("Success\n")
 
 	}*/
-	//child.Interact()
+	child.Interact()
 	child.Close()
 
 
