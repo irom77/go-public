@@ -46,17 +46,18 @@ func main() {
 	child.Expect("password:")
 	child.SendLine(*PASS)
 	child.Expect(PROMPT)
-	/*if *EXPERT != "" {
+	if *EXPERT != "" {
 		child.SendLine("expert")
 		child.Expect(*PROMPT2)
-	}*/
+	}
 	child.SendLine(*CMD)
+	child.Expect(PROMPT)
 	/*match, _ := child.ExpectRegex("LAN8]")
 	if match {
 		log.Printf("Success\n")
 
 	}*/
-	child.Interact()
+	//child.Interact()
 	child.Close()
 
 
