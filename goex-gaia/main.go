@@ -19,7 +19,7 @@ var (
 	CMD =  flag.String("cmd", "fw stat", "command to run")
 	INTERACT = flag.Bool("interact", false, "interactive mode")
 	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
-	SEARCH = flag.String("searchPattern", "", "Search pattern in output")
+	SEARCH = flag.String("search", "", "Search pattern in output")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -42,10 +42,10 @@ func init() {
 
 func main() {
 	timeout := time.Duration(*TIMEOUT) * time.Second
-	searchPattern := *SEARCH
+	searchPattern := *SEARCH  //`Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
-	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *INTERACT)
+	fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT)
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
