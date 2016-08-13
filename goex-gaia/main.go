@@ -11,11 +11,10 @@ func main() {
 		panic(err)
 	}
 	child.Expect("password:")
-	child.SendLine("n3w@y!n")
+	child.SendLine("")
 	child.Expect("#")
 	child.SendLine("fw fetch")
-	//child.Interact()
-	child.SendLine("exit")
+	child.Interact()
 	log.Printf("Success\n")
 	child.Close()
 }
