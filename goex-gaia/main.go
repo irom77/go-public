@@ -38,14 +38,14 @@ func init() {
 func main() {
 	log.Printf("Testing ssh... ")
 
-	child, err := gexpect.Spawn("ssh " + USERHOST)
+	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
 	}
 	child.Expect("password:")
-	child.SendLine(PASS)
-	child.Expect(PROMPT1)
-	child.SendLine(CMD)
+	child.SendLine(*PASS)
+	child.Expect(*PROMPT1)
+	child.SendLine(*CMD)
 	child.Interact()
 	log.Printf("Success\n")
 	child.Close()
