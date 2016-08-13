@@ -56,6 +56,7 @@ func main() {
 		PROMPT = *PROMPT2
 		child.SendLine("expert")
 		child.Expect(PROMPT)
+		child.SendLine(*EXPERT)
 	}
 	child.SendLine(*CMD)
 	if *INTERACT {
