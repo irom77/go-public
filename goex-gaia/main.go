@@ -12,7 +12,7 @@ func main() {
 	}
 	child.Expect("password:")
 	child.SendLine("n3w@y!n")
-	child.Expect(">")
+	child.Expect("#")
 	child.SendLine("show software version")
 	log.Printf("Success\n")
 }
