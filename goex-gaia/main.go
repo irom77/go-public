@@ -10,7 +10,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	child.Expect("password")
+	child.Expect("password:")
 	child.SendLine("n3w@y!n")
 	child.Expect(">")
 	child.SendLine("show software version")
