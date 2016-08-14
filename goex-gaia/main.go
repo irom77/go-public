@@ -62,6 +62,7 @@ func main() {
 	if *INTERACT == true {
 		fmt.Println("Interact\n")
 		child.Interact()
+		child.Expect(PROMPT)
 		child.Close()
 	} else {
 		if searchPattern != "" {
