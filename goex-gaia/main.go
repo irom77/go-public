@@ -47,15 +47,13 @@ func main() {
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
 	if  status != true {
-		log.Println("Not Connected")
+		log.Println("Can't connect")
 		os.Exit(0)
 	}
 	if match == true {
 		log.Println("Connected")
 		os.Exit(1)
 	}
-	log.Println("Good to go")
-	os.Exit(1)
 	searchPattern := *SEARCH  //i.e.`Done.` or 'WAN'
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USER + "@" + *HOST)
