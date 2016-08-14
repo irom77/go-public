@@ -45,18 +45,18 @@ func init() {
 func main() {
 	//port := 4434 //1100/1400 webgui port
 	match, _ := regexp.MatchString(":", *HOST)
-	fmt.Println(match)
 	if match == true {
 		conn, err := net.Dial("tcp", *HOST)
 		if err != nil {
 			log.Println("Connection error:", err)
-
+			os.Exit(0)
 		} else {
 			log.Println("Connected:", err)
 			defer conn.Close()
 		}
 	}
-	os.Exit(0)
+	log.Println("Good to go")
+	os.Exit(1)
 	searchPattern := *SEARCH  //i.e.`Done.` or 'WAN'
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USER + "@" + *HOST)
