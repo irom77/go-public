@@ -45,6 +45,7 @@ func init() {
 func main() {
 	//port := 4434 //1100/1400 webgui port
 	match, _ := regexp.MatchString(":", *HOST)
+	fmt.Println(match)
 	if match == true {
 		conn, err := net.Dial("tcp", *HOST)
 		defer conn.Close()
