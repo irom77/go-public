@@ -18,7 +18,7 @@ var (
 	PROMPT2 = flag.String("prompt2", "#", "expert prompt")
 	PASS = flag.String("pass", "", "clish password")
 	EXPERT = flag.String("expert", "", "expert password")
-	CMD =  flag.String("cmd", "fw stat", "command to run")
+	CMD = flag.String("cmd", "fw stat", "command to run")
 	INTERACT = flag.Bool("interact", false, "interactive mode")
 	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
 	SEARCH = flag.String("search", "", "Search pattern in output")
@@ -43,16 +43,23 @@ func init() {
 }
 
 func main() {
-	//port := 4434 //1100/1400 webgui port
+	port := "4434" //1100/1400 webgui port
 	match, _ := regexp.MatchString(":", *HOST)
+	var socket string
 	if match == true {
-		conn, err := net.Dial("tcp", *HOST)
-		if err != nil {
-			log.Println("Connection error:", err)
-			os.Exit(0)
-		} else {
-			log.Println("Connected:", err)
-			defer conn.Close()
+		socket = *HOST
+	} else {
+		socket = *HOST + ":" + port
+	}
+	conn, err := net.Dial("tcp", socket)
+	if err != nil {
+		log.Println("Connection error:", err)
+		os.Exit(0)
+	} else {
+		//log.Println("Connected")
+		defer conn.Close()
+		if match == true {
+			os.Exit(1)
 		}
 	}
 	log.Println("Good to go")
