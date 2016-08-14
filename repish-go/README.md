@@ -1,6 +1,6 @@
-### go expect to run commands on Checkpoint Gaia
+## go expect to run commands on Checkpoint Gaia
 
-##### EXAMPLEs
+##### EXAMPLES
 cd $GOPATH/bin
 
 go get -u github.com/irom77/go-public/goex-gaia
