@@ -106,7 +106,8 @@ func RepishSocket(port string) (bool, bool) {
 	} else {
 		socket = *HOST + ":" + port
 	}
-	conn, err := net.Dial("tcp", socket)
+	dialer := &net.Dialer{Timeout: 2 * time.Second}
+	conn, err := dialer.Dial("tcp", socket)
 	if err != nil {
 		//log.Println("Connection error:", err)
 		status = false
