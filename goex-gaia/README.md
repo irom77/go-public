@@ -9,7 +9,8 @@ goex-gaia -user="user@IP" -pass='password' -cmd="ip addr" -expert='password'
 ./goex-gaia -user='admin@10.199.107.1' -pass='password' -prompt1='#' -cmd='fw tab -t string_dictionary_table –x'
 goex-gaia -user="user@IP" -pass='password' -cmd="show software-version" 
 goex-gaia -user="user@IP" -pass='password' <- default cmd is 'fw stat'
-$ ./goex-gaia -user="admin@10.198.2.1" -pass='password' -expert='password' -cmd="fw fetch" -search='Done.'
+./goex-gaia -user="admin@10.198.2.1" -pass='password' -expert='password' -cmd="fw fetch" -search='Done.'
+./goex-gaia -user="admin@10.199.16.1" -pass='CFN$@f3M@n@g35aN' -cmd="show software-version" -search=' - '
 
 
 To read 'userhost' from file: 

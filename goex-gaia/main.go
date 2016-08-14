@@ -40,7 +40,7 @@ func init() {
 }
 
 func main() {
-	searchPattern := *SEARCH  //i.e.`Done.`
+	searchPattern := *SEARCH  //i.e.`Done.` or 'WAN'
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
 	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
@@ -60,7 +60,6 @@ func main() {
 	}
 	child.SendLine(*CMD)
 	if *INTERACT == true {
-		fmt.Println("Interact\n")
 		child.Interact()
 		child.Close()
 	} else {
