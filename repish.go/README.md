@@ -2,17 +2,29 @@
 
 ##### EXAMPLEs
 cd $GOPATH/bin
+
 go get -u github.com/irom77/go-public/goex-gaia
+
 go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1" github.com/irom77/go-public/goex-gaia
+
 goex-gaia -user="user@IP" -pass='' -cmd="df -kh" -expert=''
+
 goex-gaia -user="user@IP" -pass='' -cmd="ip addr" -expert=''
+
 goex-gaia -user='admin@10.199.107.1' -pass='' -prompt1='#' -cmd='fw tab -t string_dictionary_table –x -y'
+
 goex-gaia -user="user@IP" -pass='' -cmd="show software-version" 
+
 goex-gaia -user="user@IP" -pass='' <- default cmd is 'fw stat'
+
 goex-gaia -user="admin@10.198.2.1" -pass='' -expert='' -cmd="fw fetch" -search='Done.'
+
 goex-gaia -user="admin@10.199.16.1" -pass='' -cmd="show software-version" -search=' - '
+
 goex-gaia -user="admin@10.199.16.1" -pass='' -expert='' -cmd="fw tab -t string_dictionary_table -x -y" -search='Clearing'
+
 $ goex-gaia -user="admin@10.199.16.1" -pass='' -expert='' -cmd="fw tab -t string_dictionary_table -x -y; fw fetch" -search='Done.'
+
 ```
 2016/08/14 08:53:58 ssh admin@10.199.16.1
 searchPattern: Done.
@@ -52,6 +64,7 @@ result: [Done.]
 
 
 To read 'userhost' from file: 
+
 ```
 $ cat goex-gaia.sh
 #!/bin/bash
@@ -67,6 +80,7 @@ $./goex-gaia.sh admin
 
 
 ######To bypass Host Key Checking
+
 	$ cat /etc/ssh/ssh_config | grep StrictHostKeyChecking
 	StrictHostKeyChecking no
 	$ cat /etc/ssh/ssh_config | grep UserKnownHostsFile
