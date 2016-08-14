@@ -15,7 +15,8 @@ var (
 	PROMPT2 = flag.String("prompt2", "#", "expert prompt")
 	PASS = flag.String("pass", "", "clish password")
 	EXPERT = flag.String("expert", "", "expert password")
-	CMD = flag.String("cmd", "fw stat", "command to run")
+	CMD =  flag.String("cmd", "fw stat", "command to run")
+	INTERACT = flag.Bool("interact", false, "interactive mode")
 	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
 	SEARCH = flag.String("search", "", "Search pattern in output")
 	version = flag.Bool("v", false, "Prints current version")
@@ -42,7 +43,7 @@ func main() {
 	searchPattern := *SEARCH  //i.e.`Done.`
 	var PROMPT string = *PROMPT1
 	log.Printf("ssh " + *USERHOST)
-	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *TIMEOUT)
+	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
 	child, err := gexpect.Spawn("ssh " + *USERHOST)
 	if err != nil {
 		panic(err)
@@ -58,22 +59,27 @@ func main() {
 		child.Expect(PROMPT)
 	}
 	child.SendLine(*CMD)
-	if searchPattern != "" {
-		timeout := time.Duration(*TIMEOUT) * time.Second
-		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
-		if err != nil {
-			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-		} else {
-			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-		}
-	} else {
-		err := child.Expect(PROMPT)
-		if err != nil {
-			fmt.Println("Completed")
-		} else {
-			fmt.Println("Error: %v", err)
-		}
+	if *INTERACT == true {
+		fmt.Println("Interact\n")
+		child.Interact()
 		child.Close()
+	} else {
+		if searchPattern != "" {
+			timeout := time.Duration(*TIMEOUT) * time.Second
+			result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+			if err != nil {
+				fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
+			} else {
+				fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
+			}
+		} else {
+			err := child.Expect(PROMPT)
+			if err != nil {
+				fmt.Println("Completed")
+			} else {
+				fmt.Println("Error: %v", err)
+			}
+			child.Close()
+		}
 	}
-
 }
