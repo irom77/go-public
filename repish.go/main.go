@@ -106,7 +106,6 @@ func RepishSocket(port string) (bool, bool) {
 	} else {
 		socket = *HOST + ":" + port
 	}
-	log.Printf("Socket: %s", socket)
 	conn, err := net.Dial("tcp", socket)
 	if err != nil {
 		//log.Println("Connection error:", err)
