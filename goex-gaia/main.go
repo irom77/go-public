@@ -58,26 +58,28 @@ func main() {
 		child.SendLine(*EXPERT)
 		child.Expect(PROMPT)
 	}
+	child.SendLine(*CMD)
 	if *INTERACT == true {
 		fmt.Println("Interact\n")
 		child.Interact()
 		child.Close()
-	}
-	child.SendLine(*CMD)
-	if searchPattern != "" {
-		timeout := time.Duration(*TIMEOUT) * time.Second
-		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
-		if err != nil {
-			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-		} else {
-			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-		}
 	} else {
-		err := child.Expect(PROMPT)
-		if err != nil {
-			fmt.Println("Completed")
+		if searchPattern != "" {
+			timeout := time.Duration(*TIMEOUT) * time.Second
+			result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+			if err != nil {
+				fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
+			} else {
+				fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
+			}
 		} else {
-			fmt.Println("Error: %v", err)}
-		child.Close()
+			err := child.Expect(PROMPT)
+			if err != nil {
+				fmt.Println("Completed")
+			} else {
+				fmt.Println("Error: %v", err)
+			}
+			child.Close()
+		}
 	}
 }
