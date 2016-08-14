@@ -22,6 +22,7 @@ var (
 	INTERACT = flag.Bool("interact", false, "interactive mode")
 	TIMEOUT = flag.Int("timeout", 60, "timeout in sec")
 	SEARCH = flag.String("search", "", "Search pattern in output")
+	PORT = flag.String("port", "4434", "webgui port to test")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -43,7 +44,7 @@ func init() {
 }
 
 func main() {
-	port := "4434" //1100/1400 webgui port
+	port := *PORT //1100/1400 webgui port
 	match, _ := regexp.MatchString(":", *HOST)
 	var socket string
 	if match == true {
@@ -58,7 +59,7 @@ func main() {
 	} else {
 		//log.Println("Connected")
 		defer conn.Close()
-		if match == true {
+		if match == true { //port testing only
 			os.Exit(1)
 		}
 	}
