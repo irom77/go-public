@@ -7,10 +7,13 @@ import (
 	"fmt"
 	"flag"
 	"time"
+	"net"
+	"regexp"
 )
 
 var (
-	USERHOST = flag.String("user", "manager@localhost", "ssh user@host")
+	USER = flag.String("user", "admin", "user name")
+	HOST = flag.String("addr", "localhost", "ip address")
 	PROMPT1 = flag.String("prompt1", ">", "clish prompt")
 	PROMPT2 = flag.String("prompt2", "#", "expert prompt")
 	PASS = flag.String("pass", "", "clish password")
@@ -40,11 +43,21 @@ func init() {
 }
 
 func main() {
+	//port := 4434 //1100/1400 webgui port
+	if regexp.MatchString(":", *HOST) == true {
+		conn, err := net.Dial("tcp", *HOST)
+		defer conn.Close()
+		if err != nil {
+			log.Fatalln(err)
+
+		}
+	}
+	os.Exit(0)
 	searchPattern := *SEARCH  //i.e.`Done.` or 'WAN'
 	var PROMPT string = *PROMPT1
-	log.Printf("ssh " + *USERHOST)
-	//fmt.Println(*USERHOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
-	child, err := gexpect.Spawn("ssh " + *USERHOST)
+	log.Printf("ssh " + *USER + "@" + *HOST)
+	//fmt.Println(*USER, *HOST, *PASS, *PROMPT1, *PROMPT2, *EXPERT, *CMD, *SEARCH, *INTERACT, *TIMEOUT)
+	child, err := gexpect.Spawn("ssh " + *USER + "@" + *HOST)
 	if err != nil {
 		panic(err)
 	}
@@ -82,3 +95,4 @@ func main() {
 		}
 	}
 }
+
