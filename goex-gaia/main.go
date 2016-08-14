@@ -45,23 +45,14 @@ func init() {
 
 func main() {
 	port := *PORT //1100/1400 webgui port
-	match, _ := regexp.MatchString(":", *HOST)
-	var socket string
-	if match == true {
-		socket = *HOST
-	} else {
-		socket = *HOST + ":" + port
-	}
-	conn, err := net.Dial("tcp", socket)
-	if err != nil {
-		log.Println("Connection error:", err)
+	match, status := RepishSocket(port)
+	if  status != true {
+		log.Println("Not Connected")
 		os.Exit(0)
-	} else {
-		//log.Println("Connected")
-		defer conn.Close()
-		if match == true { //port testing only
-			os.Exit(1)
-		}
+	}
+	if match == true {
+		log.Println("Connected")
+		os.Exit(1)
 	}
 	log.Println("Good to go")
 	os.Exit(1)
@@ -108,3 +99,23 @@ func main() {
 	}
 }
 
+func RepishSocket(port string) (bool, bool) {
+	match, _ := regexp.MatchString(":", *HOST)
+	var socket string
+	var status bool
+	if match == true {
+		socket = *HOST
+	} else {
+		socket = *HOST + ":" + port
+	}
+	conn, err := net.Dial("tcp", socket)
+	if err != nil {
+		//log.Println("Connection error:", err)
+		status = false
+	} else {
+		//log.Println("Connected")
+		defer conn.Close()
+		status = true
+	}
+	return match, status
+}
