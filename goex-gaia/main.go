@@ -50,7 +50,7 @@ func main() {
 		conn, err := net.Dial("tcp", *HOST)
 		defer conn.Close()
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Println("Port closed")
 
 		}
 	}
