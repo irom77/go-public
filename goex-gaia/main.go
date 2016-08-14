@@ -63,7 +63,7 @@ func main() {
 		fmt.Println("Interact\n")
 		child.Interact()
 		child.Expect(PROMPT)
-		child.Close()
+		//child.Close()
 	} else {
 		if searchPattern != "" {
 			timeout := time.Duration(*TIMEOUT) * time.Second
