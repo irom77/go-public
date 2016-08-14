@@ -48,10 +48,12 @@ func main() {
 	fmt.Println(match)
 	if match == true {
 		conn, err := net.Dial("tcp", *HOST)
-		defer conn.Close()
 		if err != nil {
-			fmt.Println("Port closed")
+			log.Println("Connection error:", err)
 
+		} else {
+			log.Println("Connected:", err)
+			defer conn.Close()
 		}
 	}
 	os.Exit(0)
