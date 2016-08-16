@@ -3,16 +3,14 @@ package main
 import (
 	"net"
 	"os/exec"
-	//"github.com/k0kubun/pp"
 	"fmt"
 	"time"
-	//"os"
 	"github.com/k0kubun/pp"
 )
 
 func ping(pingChan <-chan string, pongChan chan<- string) {
 	for ip := range pingChan {
-		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
+		_, err := exec.Command("ping", "-c 2", "-w 2", ip).Output()
 		if err == nil {
 			pongChan <- ip
 			//fmt.Printf("%s is alive\n", ip)
