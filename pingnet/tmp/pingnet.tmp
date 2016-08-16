@@ -9,14 +9,14 @@ import (
 	//"os"
 )
 
-func ping(pingChan <-chan string, pongChan chan<- string) {
+func ping(pingChan <-chan string, DoneChan chan<- []string) {
 	for ip := range pingChan {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
 		if err == nil {
-			pongChan <- ip
+			DoneChan <- ip
 			fmt.Printf("%s is alive\n", ip)
 		} else {
-			pongChan <- ""
+			//pongChan <- ""
 			fmt.Printf("%s is dead\n", ip)
 		}
 	}
@@ -49,15 +49,15 @@ func main() {
 	//os.Exit(0)
 	concurrentMax := 5
 	pingChan := make(chan string, concurrentMax)
-	pongChan := make(chan string, len(hosts))
+	//pongChan := make(chan string, len(hosts))
 	doneChan := make(chan []string)
 	fmt.Printf("concurrentMax=%d hosts=%d -> %s...%s\n",concurrentMax, len(hosts),hosts[0], hosts[len(hosts)-1])
 	start := time.Now()
 	for i := 0; i < concurrentMax; i++ {
-		go ping(pingChan, pongChan)
+		go ping(pingChan, doneChan)
 	}
 
-	go receivePong(len(hosts), pongChan, doneChan)
+	//go receivePong(len(hosts), pongChan, doneChan)
 
 	for _, ip := range hosts {
 		pingChan <- ip
