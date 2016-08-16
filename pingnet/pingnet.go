@@ -42,7 +42,7 @@ func printer (ch <-chan string) {
 func main() {
 	start := time.Now()
 	targets := list1s()
-	fmt.Printf("\n%d\n",len(targets))
+	fmt.Printf("%d\n",targets)
 	ch := make(chan string)
 	go pinger(targets, ch)
 	go printer(ch)
