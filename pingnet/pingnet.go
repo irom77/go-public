@@ -5,7 +5,7 @@ import (
 	"fmt"
 	//"os"
 	"time"
-	"sync"
+	//"sync"
 )
 
 //var wg sync.WaitGroup
