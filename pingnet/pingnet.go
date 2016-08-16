@@ -11,8 +11,8 @@ import (
 //var wg sync.WaitGroup
 
 func list1s() []string {
-	res := make([]string, 256)
-	for x := 192; x < 193; x++ {  //192-156
+	res := make([]string, 255) //256*64
+	for x := 192; x < 193; x++ {  //192-256
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
 			//fmt.Printf("10.%d.%d.1", x, y)
