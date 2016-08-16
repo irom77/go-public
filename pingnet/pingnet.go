@@ -16,7 +16,7 @@ func ping(pingChan <-chan string, pongChan chan<- string) {
 			pongChan <- ip
 			fmt.Printf("%s is alive\n", ip)
 		} else {
-			pongChan < ""
+			pongChan <- ""
 			fmt.Printf("%s is dead\n", ip)
 		}
 	}
