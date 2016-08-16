@@ -21,7 +21,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
-		//  fmt.Println("received:", pong)
+		fmt.Println("received: %s", ip)
 		alives = append(alives, ip)
 	}
 	doneChan <- alives
@@ -39,8 +39,8 @@ func list1s(Shield_Slice int) []string {
 }
 
 func main() {
-	hosts := delete_empty(list1s(300))
-	concurrentMax := 200
+	hosts := delete_empty(list1s(200))
+	concurrentMax := 100
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan string, len(hosts))
 	doneChan := make(chan []string)
