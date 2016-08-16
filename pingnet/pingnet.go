@@ -55,9 +55,9 @@ func main() {
 
 	go receivePong(len(hosts), pongChan, doneChan)
 
-	for _, ip := range hosts {
+	for _, ip := range hosts[:300] {
 		pingChan <- ip
-		//  fmt.Println("sent: " + ip)
+		fmt.Println("sent: ", ip)
 	}
 	alives := <-doneChan
 	fmt.Println(alives)
