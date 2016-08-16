@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-var wg sync.WaitGroup
+//var wg sync.WaitGroup
 
 func list1s() []string {
 	res := make([]string, 256*64)
@@ -20,18 +20,12 @@ func list1s() []string {
 	return res
 }
 
-func pingip(ip string, ch chan<-string) bool  {
-	defer wg.Done()
-	var alive bool
+func pingip(ip string, ch chan<-string)  {
+	//defer wg.Done()
 	_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
-	if err != nil {
-		alive = false
-	} else {
-		alive = true
-		//fmt.Printf("Address %s is pingable", ip)
+	if err == nil {
 		ch <- fmt.Sprintf(ip)
 	}
-	return alive
 }
 
 func main() {
@@ -40,13 +34,13 @@ func main() {
 	fmt.Printf("\n%d\n",len(targets))
 	ch := make(chan string)
 	for _,ip := range targets[0:]{
-		wg.Add(1)
+		//wg.Add(1)
 		go pingip(ip, ch)
 	}
 	for range targets[0:]{
 		fmt.Println(<-ch)
 	}
-	wg.Wait()
+	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
 }
