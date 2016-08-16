@@ -72,7 +72,7 @@ func main() {
 		child.Expect(PROMPT)
 	}
 	child.Close()
-	Search(*CMD, searchPattern)
+	Search(CMD, searchPattern)
 }
 
 func RepishSocket(port string) (bool, bool) {
@@ -98,6 +98,7 @@ func RepishSocket(port string) (bool, bool) {
 }
 
 func Search(cli, searchPattern string) {
+	fmt.Println(cli,searchPattern)
 	p, err := gexpect.Spawn(cli)
 	if err != nil {
 		panic(err)
