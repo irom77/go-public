@@ -23,7 +23,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
 		//  fmt.Println("received:", pong)
-		alives = append(ip)
+		alives = append(alives, ip)
 	}
 	doneChan <- alives
 }
