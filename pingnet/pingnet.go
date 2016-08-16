@@ -29,7 +29,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 }
 
 func list1s(Shield_Slice int) []string {
-	res := make([]string, 256) //256*64
+	res := make([]string, 256*64) //256*64
 	for x := 192; x < 256; x++ {  //192-256
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
