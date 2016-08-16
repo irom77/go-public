@@ -69,7 +69,7 @@ func main() {
 		child.SendLine("expert")
 		child.Expect("password:")
 		child.SendLine(*EXPERT)
-		//child.Expect(PROMPT)
+		child.Expect(PROMPT)
 	}
 	child.SendLine(*CMD)
 	if *INTERACT == true {
