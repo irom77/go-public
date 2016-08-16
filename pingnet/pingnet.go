@@ -69,7 +69,7 @@ func main() {
 	}
 
 	alives := <-doneChan
-	fmt.Println(alives)
+	fmt.Printf("%+v\n", alives)
 	pp.Println(len(alives))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
