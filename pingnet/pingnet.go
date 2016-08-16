@@ -69,12 +69,6 @@ func main() {
 		//  fmt.Println("sent: " + ip)
 	}
 	alives := <-doneChan
-        v := reflect.ValueOf(alives)
-	values := make([]interface{}, v.NumField())
-	for i := 0; i < v.NumField(); i++ {
-		values[i] = v.Field(i).Interface()
-	}
-	fmt.Println(values)
 	pp.Println(len(alives))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
