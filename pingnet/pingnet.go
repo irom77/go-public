@@ -3,6 +3,7 @@ import (
 	//"net"
 	"os/exec"
 	"fmt"
+	"os"
 )
 
 func list1s() []string {
@@ -28,7 +29,7 @@ func pingip(ip string) bool  {
 }
 
 func main() {
-	pingip("10.29.1.1")
+	pingip(os.Args[1])
 	//fmt.Printf("\n%v",list1s())
 	fmt.Printf("\n%d\n",len(list1s()))
 }
