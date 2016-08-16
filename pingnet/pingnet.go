@@ -21,7 +21,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
-		fmt.Println("received: %s", ip)
+		fmt.Println("received: ", ip)
 		alives = append(alives, ip)
 	}
 	doneChan <- alives
