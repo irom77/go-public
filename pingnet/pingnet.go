@@ -28,7 +28,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	doneChan <- alives
 }
 
-func list1s(Shield_Slice int) []string {
+func list1s() []string { //Shield_Slice int
 	res := make([]string, 256*64) //256*64
 	for x := 192; x < 256; x++ {  //192-256
 		for y := 0; y < 256; y++ {
@@ -36,11 +36,11 @@ func list1s(Shield_Slice int) []string {
 			//fmt.Printf("10.%d.%d.1", x, y)
 		}
 	}
-	return res[:Shield_Slice]
+	return res //[:Shield_Slice]
 }
 
 func main() {
-	hosts := delete_empty(list1s(300))
+	hosts := delete_empty(list1s())
 	fmt.Println(hosts, len(hosts))
 	os.Exit(0)
 	concurrentMax := 200
