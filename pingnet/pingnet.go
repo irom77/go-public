@@ -6,6 +6,7 @@ import (
 	//"github.com/k0kubun/pp"
 	"fmt"
 	"time"
+	"os"
 )
 
 func ping(pingChan <-chan string, pongChan chan<- string) {
@@ -40,6 +41,8 @@ func list1s(Shield_Slice int) []string {
 
 func main() {
 	hosts := delete_empty(list1s(300))
+	fmt.Println(hosts)
+	os.Exit(0)
 	concurrentMax := 200
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan string, len(hosts))
