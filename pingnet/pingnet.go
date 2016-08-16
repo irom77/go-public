@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"github.com/k0kubun/pp"
 	"fmt"
+	"time"
 )
 
 type Pong struct {
@@ -54,8 +55,8 @@ func main() {
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan Pong, len(hosts))
 	doneChan := make(chan []Pong)
-
-	fmt.Println(len(hosts), concurrentMax)
+	fmt.Printf("concurrentMax=%d hosts=%d->%s...%s\n",concurrentMax, len(hosts),hosts[0], hosts[len(hosts)-1])
+	start := time.Now()
 	for i := 0; i < concurrentMax; i++ {
 		go ping(pingChan, pongChan)
 	}
@@ -69,6 +70,7 @@ func main() {
 
 	alives := <-doneChan
 	pp.Println(len(alives))
+	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
 
 func Hosts(cidr string) ([]string, error) {
