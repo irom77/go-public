@@ -72,7 +72,7 @@ func main() {
 		child.Expect(PROMPT)
 	}
 	child.Close()
-	Search(*cmd, searchPattern)
+	Search(*CMD, searchPattern)
 }
 
 func RepishSocket(port string) (bool, bool) {
