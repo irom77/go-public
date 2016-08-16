@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 	//"os"
+	"github.com/k0kubun/pp"
 )
 
 func ping(pingChan <-chan string, pongChan chan<- string) {
@@ -65,7 +66,7 @@ func main() {
 	}
 	alives := <-doneChan
 	fmt.Println(delete_empty(alives))
-	//pp.Println(len(alives))
+	pp.Println(len(delete_empty(alives)))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
 
