@@ -47,7 +47,7 @@ func main() {
 	//tmp(targets)
 	ch := make(chan string)
 	go pinger(targets, ch)
-	go printer(ch)
+	printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
