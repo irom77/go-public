@@ -14,6 +14,9 @@ func ping(pingChan <-chan string, pongChan chan<- string) {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
 		if err == nil {
 			pongChan <- ip
+			fmt.Printf("%s is alive", ip)
+		} else {
+			fmt.Printf("%s is dead", ip)
 		}
 	}
 }
