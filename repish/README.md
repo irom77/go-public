@@ -17,6 +17,14 @@ goex-gaia -user="user@IP" -pass='' -cmd="show software-version"
 
 goex-gaia -user="user@IP" -pass='' <- default cmd is 'fw stat'
 
+./repish -addr="10.197.57.1" -user="admin" -pass='pass' -cmd="add user indeni type admin password pass permission RW" -search='>'
+
+```
+searchPattern: >
+output:  add user indeni type admin password pass permission RW
+ADVHMASAFEPORT197-57>
+```
+
 goex-gaia -user="admin@10.198.2.1" -pass='' -expert='' -cmd="fw fetch" -search='Done.'
 
 goex-gaia -user="admin@10.199.16.1" -pass='' -cmd="show software-version" -search=' - '
@@ -61,6 +69,7 @@ Installing Security Policy...
 Done.
 result: [Done.]
 ```
+
 
 
 To read 'userhost' from file: 
