@@ -6,6 +6,7 @@ import (
 	//"os"
 	"time"
 	//"sync"
+	"os/exec"
 )
 
 //var wg sync.WaitGroup
@@ -24,11 +25,10 @@ func list1s() []string {
 func pinger(targets []string, ch chan<- string)  {
 	//defer wg.Done()
 	for _, ip := range targets[0:] {
-		/*_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
+		_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
 		if err == nil {
-		}*/
 			ch <- fmt.Sprintf(ip)
-
+		}
 	}
 	//close(ch)
 }
@@ -43,11 +43,10 @@ func printer (ch <-chan string) {
 func main() {
 	start := time.Now()
 	targets := delete_empty(list1s())
-	//fmt.Printf("%v\n%d\n",list1s(),len(list1s()))
-	fmt.Printf("%v\n%d/%s.../%s\n",targets,len(targets),targets[0], targets[len(targets)-1])
-	//ch := make(chan string)
-	//go pinger(targets, ch)
-	//go printer(ch)
+	//fmt.Printf("%v\n%d/%s.../%s\n",targets,len(targets),targets[0], targets[len(targets)-1])
+	ch := make(chan string)
+	go pinger(targets, ch)
+	go printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
