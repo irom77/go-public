@@ -70,6 +70,11 @@ Done.
 result: [Done.]
 ```
 
+$  ./repish -a="10.197.57.1" -p='' -e='' -s='Interrupt' -c="ifconfig WAN" | grep addr: | awk '{ print $2 }'
+
+```
+addr:192.168.1.150
+```
 
 
 To read 'userhost' from file: 
