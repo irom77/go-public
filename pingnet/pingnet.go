@@ -20,7 +20,7 @@ func list1s() []string {
 	return res
 }
 
-func pinger(targets []string, ch chan<-string)  {
+func pinger(targets []string, ch chan string)  {
 	//defer wg.Done()
 	for _, ip := range targets[0:] {
 		_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
@@ -31,9 +31,9 @@ func pinger(targets []string, ch chan<-string)  {
 	//close(ch)
 }
 
-func printer (c chan<-string) {
+func printer (ch chan string) {
 	for {
-		msg := <-c
+		msg := <-ch
 		fmt.Println(msg)
 	}
 }
