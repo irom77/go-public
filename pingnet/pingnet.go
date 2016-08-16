@@ -18,7 +18,7 @@ func ping(pingChan <-chan string, pongChan chan<- string) {
 	}
 }
 
-func receivePong(pongNum int, pongChan <-chan Pong, doneChan chan<- []string) {
+func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) {
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
