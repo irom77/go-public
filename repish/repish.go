@@ -14,7 +14,7 @@ var (
 	USER = flag.String("u", "admin", "user name")
 	HOST = flag.String("a", "localhost", "ip address")
 	PROMPT1 = flag.String("p1", ">", "clish prompt")
-	PROMPT2 = flag.String("p2", "#", "expert prompt")
+	PROMPT2 = flag.String("p2", "]#", "expert prompt")
 	PASS = flag.String("p", "", "clish password")
 	EXPERT = flag.String("e", "", "expert password")
 	CMD = flag.String("c", "fw stat", "command to run")
