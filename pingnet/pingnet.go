@@ -23,10 +23,11 @@ func list1s() []string {
 func pinger(targets []string, ch chan<- string)  {
 	//defer wg.Done()
 	for _, ip := range targets[0:] {
-		_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
+		/*_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
 		if err == nil {
+		}*/
 			ch <- fmt.Sprintf(ip)
-		}
+
 	}
 	//close(ch)
 }
