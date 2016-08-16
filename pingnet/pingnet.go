@@ -15,6 +15,7 @@ func list1s() []string {
 	for x := 192; x < 193; x++ {  //192-156
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
+			println("10.%d.%d.1", x, y)
 		}
 	}
 	return res
@@ -42,7 +43,8 @@ func printer (ch <-chan string) {
 func main() {
 	start := time.Now()
 	//targets := list1s()
-	fmt.Printf("%s\n%d",list1s(),len(list1s()))
+	list1s()
+	//fmt.Printf("%s\n%d",list1s(),len(list1s()))
 	//ch := make(chan string)
 	//go pinger(targets, ch)
 	//go printer(ch)
