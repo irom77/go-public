@@ -15,10 +15,10 @@ func ping(pingChan <-chan string, pongChan chan<- string) {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
 		if err == nil {
 			pongChan <- ip
-			fmt.Printf("%s is alive\n", ip)
+			//fmt.Printf("%s is alive\n", ip)
 		} else {
 			pongChan <- ""
-			fmt.Printf("%s is dead\n", ip)
+			//fmt.Printf("%s is dead\n", ip)
 		}
 	}
 }
@@ -27,7 +27,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
-		fmt.Println("received: ", ip)
+		//fmt.Println("received: ", ip)
 		alives = append(alives, ip)
 	}
 	doneChan <- alives
@@ -47,7 +47,6 @@ func list1s() []string { //Shield_Slice int
 func main() {
 	hosts := delete_empty(list1s())
 	//fmt.Println(hosts, len(hosts))
-	//os.Exit(0)
 	concurrentMax := 5
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan string, len(hosts))
@@ -62,7 +61,7 @@ func main() {
 
 	for _, ip := range hosts {
 		pingChan <- ip
-		fmt.Println("sent: ", ip)
+		//fmt.Println("sent: ", ip)
 	}
 	alives := <-doneChan
 	fmt.Println(delete_empty(alives))
