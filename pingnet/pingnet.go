@@ -57,8 +57,8 @@ func main() {
 	targets := delete_empty(list1s())
 	fmt.Printf("%d->%s...%s\n",len(targets),targets[0], targets[len(targets)-1])
 	ch := make(chan string)
-	go pinger2(targets, ch)
-	printer2(ch)
+	go pinger(targets, ch)
+	printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
