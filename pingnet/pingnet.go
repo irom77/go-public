@@ -28,6 +28,12 @@ func pingip(ip string, ch chan<-string)  {
 	}
 }
 
+func printer (c chan string) {
+	for alive := range c {
+		fmt.Println(alive)
+	}
+}
+
 func main() {
 	start := time.Now()
 	targets := list1s()
@@ -37,10 +43,8 @@ func main() {
 		//wg.Add(1)
 		go pingip(ip, ch)
 	}
-	close(ch)
-	for range targets[0:]{
-		fmt.Println(<-ch)
-	}
+	printer(ch)
+
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
