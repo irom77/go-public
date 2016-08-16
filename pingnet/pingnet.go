@@ -43,10 +43,10 @@ func main() {
 		wg.Add(1)
 		go pingip(ip, ch)
 	}
-	wg.Wait()
 	for range targets[0:]{
 		fmt.Println(<-ch)
 	}
+	wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
 }
