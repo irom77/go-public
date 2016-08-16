@@ -29,7 +29,7 @@ func pingip(ip string) bool  {
 }
 
 func main() {
-	if os.Args[1] != "" {
+	if os.Args[1] != " " {
 		pingip(os.Args[1])
 	}
 
