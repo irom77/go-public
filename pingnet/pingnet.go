@@ -37,6 +37,7 @@ func main() {
 		//wg.Add(1)
 		go pingip(ip, ch)
 	}
+	close(ch)
 	for range targets[0:]{
 		fmt.Println(<-ch)
 	}
