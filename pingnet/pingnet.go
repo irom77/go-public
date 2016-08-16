@@ -6,7 +6,7 @@ import (
 	//"github.com/k0kubun/pp"
 	"fmt"
 	"time"
-	"os"
+	//"os"
 )
 
 func ping(pingChan <-chan string, pongChan chan<- string) {
