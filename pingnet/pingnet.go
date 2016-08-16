@@ -6,7 +6,6 @@ import (
 	"github.com/k0kubun/pp"
 	"fmt"
 	"time"
-	"reflect"
 )
 
 type Pong struct {
@@ -14,27 +13,22 @@ type Pong struct {
 	Alive bool
 }
 
-func ping(pingChan <-chan string, pongChan chan<- Pong) {
+func ping(pingChan <-chan string, pongChan chan<- string) {
 	for ip := range pingChan {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
-		var alive bool
-		if err != nil {
-			alive = false
-		} else {
-			alive = true
+		//var alive bool
+		if err == nil {
+			pongChan <- ip
 		}
-		pongChan <- Pong{Ip: ip, Alive: alive}
 	}
 }
 
-func receivePong(pongNum int, pongChan <-chan Pong, doneChan chan<- []Pong) {
-	var alives []Pong
+func receivePong(pongNum int, pongChan <-chan Pong, doneChan chan<- []string) {
+	var alives []string
 	for i := 0; i < pongNum; i++ {
-		pong := <-pongChan
+		ip := <-pongChan
 		//  fmt.Println("received:", pong)
-		if pong.Alive {
-			alives = append(alives, pong)
-		}
+		alives = append(ip)
 	}
 	doneChan <- alives
 }
@@ -54,8 +48,8 @@ func main() {
 	hosts := delete_empty(list1s(2500))
 	concurrentMax := 200
 	pingChan := make(chan string, concurrentMax)
-	pongChan := make(chan Pong, len(hosts))
-	doneChan := make(chan []Pong)
+	pongChan := make(chan string, len(hosts))
+	doneChan := make(chan []string)
 	fmt.Printf("concurrentMax=%d hosts=%d -> %s...%s\n",concurrentMax, len(hosts),hosts[0], hosts[len(hosts)-1])
 	start := time.Now()
 	for i := 0; i < concurrentMax; i++ {
