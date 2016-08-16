@@ -3,7 +3,7 @@ package main
 import (
 	"net"
 	"os/exec"
-	"github.com/k0kubun/pp"
+	//"github.com/k0kubun/pp"
 	"fmt"
 	"time"
 )
@@ -57,7 +57,7 @@ func main() {
 		//  fmt.Println("sent: " + ip)
 	}
 	alives := <-doneChan
-	fmt.Printf(alives)
+	fmt.Println(alives)
 	//pp.Println(len(alives))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
