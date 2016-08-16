@@ -22,7 +22,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
-		//fmt.Println("received: ", ip)
+		fmt.Println("received: ", ip)
 		alives = append(alives, ip)
 	}
 	doneChan <- alives
@@ -43,7 +43,7 @@ func main() {
 	hosts := delete_empty(list1s())
 	//fmt.Println(hosts, len(hosts))
 	//os.Exit(0)
-	concurrentMax := 200
+	concurrentMax := 20
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan string, len(hosts))
 	doneChan := make(chan []string)
@@ -57,7 +57,7 @@ func main() {
 
 	for _, ip := range hosts {
 		pingChan <- ip
-		//fmt.Println("sent: ", ip)
+		fmt.Println("sent: ", ip)
 	}
 	alives := <-doneChan
 	fmt.Println(alives)
