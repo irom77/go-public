@@ -30,7 +30,7 @@ func pinger(targets []string, ch chan<- string)  {
 			ch <- fmt.Sprintf(ip)
 		}
 	}
-	close(ch)
+	//close(ch)
 }
 
 func pinger2(targets []string, ch chan<- string) {
