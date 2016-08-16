@@ -71,8 +71,8 @@ func main() {
 		child.SendLine(*EXPERT)
 		child.Expect(PROMPT)
 	}
-	Search(*child, cmd, searchPattern)
 	child.Close()
+	Search(cmd, searchPattern)
 }
 
 func RepishSocket(port string) (bool, bool) {
@@ -97,18 +97,22 @@ func RepishSocket(port string) (bool, bool) {
 	return match, status
 }
 
-func Search(child, cli, searchPattern) {
-	child.SendLine(cli)
+func Search(cli, searchPattern string) {
+	p, err := gexpect.Spawn(cli)
+	if err != nil {
+		panic(err)
+	}
 	if *INTERACT == true {
-		child.Interact()
+		p.Interact()
 	}
 	if searchPattern != "" {
 		timeout := time.Duration(*TIMEOUT) * time.Second
-		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+		result, out, err := p.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 		}
 	}
+	p.close()
 }
