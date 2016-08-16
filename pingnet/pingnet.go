@@ -8,11 +8,6 @@ import (
 	"time"
 )
 
-type Pong struct {
-	Ip    string
-	Alive bool
-}
-
 func ping(pingChan <-chan string, pongChan chan<- string) {
 	for ip := range pingChan {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
