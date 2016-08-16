@@ -50,7 +50,7 @@ func list1s(Shield_Slice int) []string {
 }
 
 func main() {
-	hosts := delete_empty(list1s(2100))
+	hosts := delete_empty(list1s(2500))
 	concurrentMax := 200
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan Pong, len(hosts))
