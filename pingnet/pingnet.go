@@ -55,7 +55,7 @@ func main() {
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan Pong, len(hosts))
 	doneChan := make(chan []Pong)
-	fmt.Printf("concurrentMax=%d hosts=%d->%s...%s\n",concurrentMax, len(hosts),hosts[0], hosts[len(hosts)-1])
+	fmt.Printf("concurrentMax=%d hosts=%d -> %s...%s\n",concurrentMax, len(hosts),hosts[0], hosts[len(hosts)-1])
 	start := time.Now()
 	for i := 0; i < concurrentMax; i++ {
 		go ping(pingChan, pongChan)
