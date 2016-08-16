@@ -33,6 +33,12 @@ func pinger(targets []string, ch chan<- string)  {
 	//close(ch)
 }
 
+func pinger2(targets []string, ch chan<- string) {
+	for _, ip := range targets {
+		ch <- fmt.Sprintf(ip)
+	}
+}
+
 func printer (ch <-chan string) {
 	for {
 		msg := <-ch
@@ -50,9 +56,8 @@ func main() {
 	start := time.Now()
 	targets := delete_empty(list1s())
 	fmt.Printf("%d->%s...%s\n",len(targets),targets[0], targets[len(targets)-1])
-	//tmp(targets)
 	ch := make(chan string)
-	go pinger(targets, ch)
+	go pinger2(targets, ch)
 	printer2(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
@@ -69,8 +74,4 @@ func delete_empty (s []string) []string {
 	return r
 }
 
-func tmp(targets []string) {
-	for _, ip := range targets {
-		fmt.Printf(ip)
-	}
-}
+
