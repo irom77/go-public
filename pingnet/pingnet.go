@@ -64,7 +64,7 @@ func main() {
 		fmt.Println("sent: ", ip)
 	}
 	alives := <-doneChan
-	fmt.Println(alives)
+	fmt.Println(delete_empty(alives))
 	//pp.Println(len(alives))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
