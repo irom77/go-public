@@ -3,12 +3,13 @@ import (
 	//"net"
 	"os/exec"
 	"fmt"
-	"os"
+	//"os"
+	"time"
 )
 
 func list1s() []string {
 	res := make([]string, 256*64)
-	for x := 192; x < 256; x++ {
+	for x := 192; x < 193; x++ {  //192-156
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
 		}
@@ -16,20 +17,30 @@ func list1s() []string {
 	return res
 }
 
-func pingip(ip string) bool  {
+func pingip(ip string, ch chan<-string) bool  {
 	var alive bool
 	_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
 	if err != nil {
 		alive = false
 	} else {
 		alive = true
-		fmt.Printf("Address %s is pingable", ip)
+		//fmt.Printf("Address %s is pingable", ip)
+		ch <- fmt.Sprintf(ip)
 	}
 	return alive
 }
 
 func main() {
-	pingip(os.Args[1])
-	//fmt.Printf("\n%v",list1s())
-	fmt.Printf("\n%d\n",len(list1s()))
+	start := time.Now()
+	targets := list1s()
+	fmt.Printf("\n%d\n",len(targets))
+	ch := make(chan string)
+	for _,ip := range targets[0:]{
+		go pingip(ip, ch)
+	}
+	for range targets[0:]{
+		fmt.Println(<-ch)
+	}
+	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+	//os.Args[1]
 }
