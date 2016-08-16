@@ -17,7 +17,7 @@ func list1s() []string {
 
 func pingip(ip string) bool  {
 	var alive bool
-	_, err := exec.Command("ping", "-n", "1", "-w", "1000", ip).Output()
+	_, err := exec.Command("ping", "-c", "1", "-w", "1000", ip).Output()
 	if err != nil {
 		alive = false
 	} else {
