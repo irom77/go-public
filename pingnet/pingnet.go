@@ -9,7 +9,7 @@ import (
 
 func ping(pingChan <-chan string, pongChan chan<- string) {
 	for ip := range pingChan {
-		_, err := exec.Command("ping", "-c 2", "-w 2", ip).Output()  //Linux
+		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 		//_, err := exec.Command("ping", "-n 2", "-w 2", ip).Output()
 		if err == nil {
 			pongChan <- ip
