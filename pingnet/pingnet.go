@@ -42,13 +42,23 @@ func printer (ch <-chan string) {
 
 func main() {
 	start := time.Now()
-	targets := list1s()
+	targets := delete_empty(list1s())
 	//fmt.Printf("%v\n%d\n",list1s(),len(list1s()))
-	fmt.Printf("%v\n%d/%s.../%s",targets,len(targets),targets[0], targets[len(targets)-1])
+	fmt.Printf("%v\n%d/%s.../%s\n",targets,len(targets),targets[0], targets[len(targets)-1])
 	//ch := make(chan string)
 	//go pinger(targets, ch)
 	//go printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
+}
+
+func delete_empty (s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }
