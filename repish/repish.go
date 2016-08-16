@@ -44,12 +44,12 @@ func init() {
 
 func main() {
 	port := *PORT //1100/1400 webgui port
-	colon, status := RepishSocket(port)
+	match, status := RepishSocket(port)
 	if  status != true {
 		//log.Println("Can't connect")
 		os.Exit(0)
 	}
-	if colon == true {
+	if match == true {
 		//log.Println("Connected")
 		os.Exit(1)
 	}
@@ -71,8 +71,21 @@ func main() {
 		child.SendLine(*EXPERT)
 		child.Expect(PROMPT)
 	}
+	child.SendLine(*CMD)
+	if *INTERACT == true {
+		child.Interact()
+	} else {
+		if searchPattern != "" {
+			timeout := time.Duration(*TIMEOUT) * time.Second
+			result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+			if err != nil {
+				fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
+			} else {
+				fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
+			}
+		}
+	}
 	child.Close()
-	Search(*CMD, searchPattern)
 }
 
 func RepishSocket(port string) (bool, bool) {
@@ -95,25 +108,4 @@ func RepishSocket(port string) (bool, bool) {
 		status = true
 	}
 	return match, status
-}
-
-func Search(cli, searchPattern string) {
-	fmt.Println(cli,searchPattern)
-	p, err := gexpect.Spawn(cli)
-	if err != nil {
-		panic(err)
-	}
-	if *INTERACT == true {
-		p.Interact()
-	}
-	if searchPattern != "" {
-		timeout := time.Duration(*TIMEOUT) * time.Second
-		result, out, err := p.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
-		if err != nil {
-			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-		} else {
-			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-		}
-	}
-	p.Close()
 }
