@@ -24,7 +24,7 @@ func list1s() []string {
 
 func pinger(targets []string, ch chan<- string)  {
 	//defer wg.Done()
-	for _, ip := range targets[0:] {
+	for _, ip := range targets {
 		_, err := exec.Command("ping", "-c", "1", "-w", "1", ip).Output()
 		if err == nil {
 			ch <- fmt.Sprintf(ip)
@@ -44,10 +44,10 @@ func main() {
 	start := time.Now()
 	targets := delete_empty(list1s())
 	fmt.Printf("%d->%s...%s\n",len(targets),targets[0], targets[len(targets)-1])
-	tmp(targets)
-	//ch := make(chan string)
-	//go pinger(targets, ch)
-	//go printer(ch)
+	//tmp(targets)
+	ch := make(chan string)
+	go pinger(targets, ch)
+	go printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
