@@ -15,7 +15,7 @@ func list1s() []string {
 	for x := 192; x < 193; x++ {  //192-156
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
-			printf("10.%d.%d.1", x, y)
+			fmt.Printf("10.%d.%d.1", x, y)
 		}
 	}
 	return res
