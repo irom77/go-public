@@ -44,6 +44,7 @@ func main() {
 		go pingip(ip, ch)
 	}
 	for range targets[0:]{
+		wg.Add(1)
 		fmt.Println(<-ch)
 	}
 	wg.Wait()
