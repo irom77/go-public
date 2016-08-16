@@ -22,8 +22,8 @@ func pingip(ip string) bool  {
 		alive = false
 	} else {
 		alive = true
+		fmt.Printf("Address %s is pingable", ip)
 	}
-	fmt.Printf("Address %s is %t pingable", ip, alive)
 	return alive
 }
 
