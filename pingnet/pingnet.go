@@ -14,7 +14,7 @@ type Pong struct {
 
 func ping(pingChan <-chan string, pongChan chan<- Pong) {
 	for ip := range pingChan {
-		_, err := exec.Command("ping", "-n1", "-w1", ip).Output()
+		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
 		var alive bool
 		if err != nil {
 			alive = false
