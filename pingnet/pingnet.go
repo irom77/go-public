@@ -29,8 +29,10 @@ func pingip(ip string) bool  {
 }
 
 func main() {
-	fmt.Println(os.Args[1])
-	//pingip(os.Args[1])
+	if os.Args[1] != "" {
+		pingip(os.Args[1])
+	}
+
 	//fmt.Printf("\n%v",list1s())
 	fmt.Printf("\n%d\n",len(list1s()))
 }
