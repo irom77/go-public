@@ -63,7 +63,10 @@ func main() {
 	}
 	child.Expect("password:")
 	child.SendLine(*PASS)
-	child.Expect(PROMPT)
+	err = child.Expect(PROMPT)
+	if err != nil {
+		panic(err)
+	}
 	if *EXPERT != "" {
 		PROMPT = *PROMPT2
 		child.SendLine("expert")
