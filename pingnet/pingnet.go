@@ -64,7 +64,7 @@ func delete_empty (s []string) []string {
 }
 
 func tmp(targets []string) {
-	for _, ip := range targets[0:] {
+	for _, ip := range targets {
 		fmt.Printf(ip)
 	}
 }
