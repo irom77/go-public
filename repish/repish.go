@@ -75,14 +75,12 @@ func main() {
 	if *INTERACT == true {
 		child.Interact()
 	} else {
-		if searchPattern != "" {
-			timeout := time.Duration(*TIMEOUT) * time.Second
-			result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
-			if err != nil {
-				fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-			} else {
-				fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			}
+		timeout := time.Duration(*TIMEOUT) * time.Second
+		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
+		if err != nil {
+			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
+		} else {
+			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 		}
 	}
 	child.Close()
