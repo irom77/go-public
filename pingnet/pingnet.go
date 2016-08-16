@@ -22,7 +22,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 	var alives []string
 	for i := 0; i < pongNum; i++ {
 		ip := <-pongChan
-		fmt.Println("received: ", ip)
+		//fmt.Println("received: ", ip)
 		alives = append(alives, ip)
 	}
 	doneChan <- alives
@@ -30,7 +30,7 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan<- []string) 
 
 func list1s() []string { //Shield_Slice int
 	res := make([]string, 256*64) //256*64
-	for x := 192; x < 256; x++ {  //192-256
+	for x := 192; x < 193; x++ {  //192-256
 		for y := 0; y < 256; y++ {
 			res = append(res, fmt.Sprintf("10.%d.%d.1", x, y))
 			//fmt.Printf("10.%d.%d.1", x, y)
@@ -55,9 +55,9 @@ func main() {
 
 	go receivePong(len(hosts), pongChan, doneChan)
 
-	for _, ip := range hosts[:300] {
+	for _, ip := range hosts {
 		pingChan <- ip
-		fmt.Println("sent: ", ip)
+		//fmt.Println("sent: ", ip)
 	}
 	alives := <-doneChan
 	fmt.Println(alives)
