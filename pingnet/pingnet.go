@@ -11,7 +11,6 @@ import (
 func ping(pingChan <-chan string, pongChan chan<- string) {
 	for ip := range pingChan {
 		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()
-		//var alive bool
 		if err == nil {
 			pongChan <- ip
 		}
@@ -58,7 +57,8 @@ func main() {
 		//  fmt.Println("sent: " + ip)
 	}
 	alives := <-doneChan
-	pp.Println(len(alives))
+	fmt.Printf(alives)
+	//pp.Println(len(alives))
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
 
