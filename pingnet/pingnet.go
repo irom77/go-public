@@ -31,9 +31,10 @@ func pinger(targets []string, ch chan<-string)  {
 	//close(ch)
 }
 
-func printer (c chan string) {
-	for alive := range c {
-		fmt.Println(alive)
+func printer (c chan<-string) {
+	for {
+		msg := <-c
+		fmt.Println(msg)
 	}
 }
 
@@ -43,7 +44,7 @@ func main() {
 	fmt.Printf("\n%d\n",len(targets))
 	ch := make(chan string)
 	go pinger(targets, ch)
-	printer(ch)
+	go printer(ch)
 	//wg.Wait()
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	//os.Args[1]
