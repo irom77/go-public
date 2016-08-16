@@ -28,7 +28,7 @@ func pinger(targets []string, ch chan<-string)  {
 			ch <- fmt.Sprintf(ip)
 		}
 	}
-	close(ch)
+	//close(ch)
 }
 
 func printer (c chan string) {
