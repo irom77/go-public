@@ -20,7 +20,7 @@ var (
 	CMD = flag.String("c", "fw stat", "command to run")
 	INTERACT = flag.Bool("i", false, "interactive mode")
 	TIMEOUT = flag.Int("t", 60, "timeout in sec")
-	SEARCH = flag.String("s", "", "Search pattern in output")
+	SEARCH = flag.String("s", "[>#]", "Search pattern in output")
 	PORT = flag.String("webgui", "4434", "webgui port to test")
 	version = flag.Bool("v", false, "Prints current version")
 )
