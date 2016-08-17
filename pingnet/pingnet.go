@@ -81,7 +81,11 @@ func main() {
 		hosts = delete_empty(list1s(256))
 		//fmt.Println(hosts, len(hosts))
 	} else if num, err := strconv.Atoi(*HOSTS); err == nil {
-		hosts = delete_empty(list1s(num))
+		if (192 < num) && (num <= 256) {
+			hosts = delete_empty(list1s(num))
+		} else {
+			hosts = delete_empty(list1s(256))
+		}
 	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
