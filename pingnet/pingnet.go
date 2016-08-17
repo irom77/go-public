@@ -72,6 +72,7 @@ func main() {
 		//fmt.Println(hosts, len(hosts))
 	} else if *HOSTS == "test"{
 		fmt.Println("Test")
+		os.Exit(0)
 	}
 
 	concurrentMax := *CONCURRENTMAX
