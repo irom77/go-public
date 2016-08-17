@@ -8,7 +8,6 @@ import (
 	"flag"
 	"os"
 	"bufio"
-	"path"
 )
 
 var (
