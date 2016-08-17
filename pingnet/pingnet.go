@@ -8,12 +8,13 @@ import (
 	"flag"
 	"os"
 	"bufio"
+	"strconv"
 )
 
 var (
-	HOSTS = flag.String("a", "all", "destinations to ping") // 'all', '/path/file' or i.e. '193'
+	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt") // 'all', '/path/file' or i.e. '193'
 	CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
-	PINGCOUNT = flag.String("c", "-c 1", "ping count (-n for Win)")
+	PINGCOUNT = flag.String("c", "-c 1", "ping count (-n 1 for Win)")
 	PINGTIMEOUT = flag.String("w", "-w 1", "ping timout in s")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("print", true, "print to console")
@@ -60,10 +61,10 @@ func receivePong(pongNum int, pongChan <-chan string, doneChan chan <- []string)
 	doneChan <- alives
 }
 
-func list1s() []string {
+func list1s(limit2 int) []string {
 	//Shield_Slice int
 	res := make([]string, 256 * 64) //256*64
-	for x := 192; x < 200; x++ {
+	for x := 192; x < limit2; x++ {
 		//192-256
 		for y := 0; y < 256; y++ {
 			//0-256
@@ -77,8 +78,10 @@ func list1s() []string {
 func main() {
 	var hosts []string
 	if *HOSTS == "all" {
-		hosts = delete_empty(list1s())
+		hosts = delete_empty(list1s(256))
 		//fmt.Println(hosts, len(hosts))
+	} else if _, err := strconv.Atoi(*HOSTS); err == nil {
+		hosts = delete_empty(list1s(*HOSTS))
 	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
