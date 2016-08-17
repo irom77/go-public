@@ -7,6 +7,8 @@ import (
 	"github.com/k0kubun/pp"
 	"flag"
 	"os"
+	"bufio"
+	"path"
 )
 
 var (
@@ -78,8 +80,14 @@ func main() {
 	if *HOSTS == "all" {
 		hosts = delete_empty(list1s())
 		//fmt.Println(hosts, len(hosts))
-	} else if *HOSTS == "test" {
-		fmt.Println("Test")
+	} else if pathExists(*HOSTS){
+		lines, err := readHosts(*HOSTS)
+		hosts = delete_empty(lines)
+		if err != nil {
+			fmt.Println("Error reading file %s", *HOSTS)
+		}
+	} else {
+		fmt.Println(*HOSTS)
 		os.Exit(0)
 	}
 
@@ -119,4 +127,26 @@ func delete_empty(s []string) []string {
 		}
 	}
 	return r
+}
+
+func readHosts(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
+}
+
+func pathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil { return true, nil }
+	if os.IsNotExist(err) { return false, nil }
+	return true, err
 }
