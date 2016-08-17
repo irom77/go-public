@@ -79,7 +79,7 @@ func main() {
 	if *HOSTS == "all" {
 		hosts = delete_empty(list1s())
 		//fmt.Println(hosts, len(hosts))
-	} else if _, ok := pathExists(*HOSTS); ok {
+	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
 		if err != nil {
@@ -146,6 +146,6 @@ func readHosts(path string) ([]string, error) {
 func pathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil { return true, nil }
-	if os.IsNotExist(err) { return false, nil }
-	return true, err
+	if os.IsNotExist(err) { return false }
+	return true
 }
