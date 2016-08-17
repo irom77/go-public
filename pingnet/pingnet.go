@@ -79,8 +79,8 @@ func main() {
 	if *HOSTS == "all" {
 		hosts = delete_empty(list1s())
 		//fmt.Println(hosts, len(hosts))
-	} else if pathExists(*HOSTS){
-		lines, err := readHosts(*HOSTS)
+	} else if _, ok := pathExists(*HOSTS); ok {
+		err, lines := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
 		if err != nil {
 			fmt.Println("Error reading file %s", *HOSTS)
@@ -147,5 +147,5 @@ func pathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil { return true, nil }
 	if os.IsNotExist(err) { return false, nil }
-	return true, err
+	return err, true
 }
