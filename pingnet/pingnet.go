@@ -80,8 +80,8 @@ func main() {
 	if *HOSTS == "all" {
 		hosts = delete_empty(list1s(256))
 		//fmt.Println(hosts, len(hosts))
-	} else if _, err := strconv.Atoi(*HOSTS); err == nil {
-		hosts = delete_empty(list1s(*HOSTS))
+	} else if num, err := strconv.Atoi(*HOSTS); err == nil {
+		hosts = delete_empty(list1s(num))
 	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
