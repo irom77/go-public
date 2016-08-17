@@ -143,7 +143,7 @@ func readHosts(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func pathExists(path string) (bool, error) {
+func pathExists(path string) (bool) {
 	_, err := os.Stat(path)
 	if err == nil { return true, nil }
 	if os.IsNotExist(err) { return false }
