@@ -120,7 +120,7 @@ func main() {
 		for _, ip := range result {
 			fmt.Println(ip)
 		}
-		fmt.Printf("%.2fs\n", time.Since(start).Seconds())
+		fmt.Printf("%.2fs %d/%d %d\n", time.Since(start).Seconds(),len(result),len(hosts),concurrentMax)
 	}
 	pp.Println(len(result))
 }
