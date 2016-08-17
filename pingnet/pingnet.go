@@ -78,13 +78,13 @@ func list1s(limit2 int) []string {
 func main() {
 	var hosts []string
 	if *HOSTS == "all" {
-		hosts = delete_empty(list1s(256))
+		hosts = delete_empty(list1s(200))
 		//fmt.Println(hosts, len(hosts))
 	} else if num, err := strconv.Atoi(*HOSTS); err == nil {
 		if (192 < num) && (num <= 256) {
 			hosts = delete_empty(list1s(num))
 		} else {
-			hosts = delete_empty(list1s(256))
+			hosts = delete_empty(list1s(200))
 		}
 	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
