@@ -12,7 +12,7 @@ import (
 var (
 	HOSTS = flag.String("a", "all", "destinations to ping") // 'all', '/path/file' or i.e. '193'
 	CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
-	PINGOPTIONS = flag.String("o", "-c 1 -w 1", "ping options")
+	OPTIONS = flag.String("o", "-c 1 -w 1", "ping options")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("print", true, "print to console")
 )
@@ -35,7 +35,8 @@ func init() {
 }
 func ping(pingChan <-chan string, pongChan chan <- string) {
 	for ip := range pingChan {
-		_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
+		//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
+		_, err := exec.Command("ping", *OPTIONS, ip).Output()
 		//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
 		if err == nil {
 			pongChan <- ip
