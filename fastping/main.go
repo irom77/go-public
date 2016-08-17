@@ -5,32 +5,24 @@ import (
 	"net"
 	"time"
 	"github.com/tatsushid/go-fastping"
-	//"os"
+	"os"
 )
-
 
 func main() {
 	p := fastping.NewPinger()
-	/*ra, err := net.ResolveIPAddr("ip4:icmp", os.Args[1])
+	ra, err := net.ResolveIPAddr("ip4:icmp", os.Args[1])
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-	}*/
-	var hosts []string
-	hosts = delete_empty(list1s(193))
-
-	for _, ip := range hosts {
-		p.AddIP(ip)
 	}
-
-	//p.AddIPAddr(ra)
+	p.AddIPAddr(ra)
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		fmt.Printf("IP Addr: %s receive, RTT: %v\n", addr.String(), rtt)
 	}
 	p.OnIdle = func() {
-		fmt.Println("finish")
+		//fmt.Println("finish")
 	}
-	err := p.Run()
+	err = p.Run()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -59,26 +51,4 @@ func delete_empty(s []string) []string {
 	return r
 }
 
-func tmp() {
-	pinger := fastping.NewPinger()
 
-	_, err := pinger.Network("udp")
-	// We shouldn't ever get an error but we're checking anyway
-	if err != nil {
-		panic("Error setting network type: " + err.Error())
-	}
-
-	addr, err := net.ResolveIPAddr("ip", "www.google.com")
-	if err != nil {
-		panic("Error resolving IP Address: " + err.Error())
-	}
-
-	pinger.AddIPAddr(addr)
-	pinger.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
-		fmt.Printf("%s time=%v seconds\n", addr, rtt.Seconds())
-	}
-
-	if err = pinger.Run(); err != nil {
-		panic(err)
-	}
-}
