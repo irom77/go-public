@@ -5,19 +5,19 @@ cd $GOPATH/bin
 
 go get -u github.com/irom77/go-public/repish
 
-go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1" github.com/irom77/go-public/goex-gaia
+go build -ldflags "-X main.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X main.Version=1.0.1" github.com/irom77/go-public/repsih
 
-goex-gaia -user="user@IP" -pass='' -cmd="df -kh" -expert=''
+repish -a="IP" -p='' -c="df -kh" -e=''
 
-goex-gaia -user="user@IP" -pass='' -cmd="ip addr" -expert=''
+repsih -a="IP" -p='' -c="ip addr" -e=''
 
-goex-gaia -user='admin@10.199.107.1' -pass='' -prompt1='#' -cmd='fw tab -t string_dictionary_table –x -y'
+repsih -a="10.199.107.1" -p='' -p1='#' -c='fw tab -t string_dictionary_table –x -y'
 
-goex-gaia -user="user@IP" -pass='' -cmd="show software-version" 
+repsih -a="IP" -p='' -c="show software-version" 
 
-goex-gaia -user="user@IP" -pass='' <- default cmd is 'fw stat'
+repsih -a="IP" -p='' <- default cmd is 'fw stat'
 
-./repish -addr="10.197.57.1" -user="admin" -pass='pass' -cmd="add user indeni type admin password pass permission RW" -search='>'
+./repish -a="10.197.57.1" -u="admin" -p='pass' -c="add user indeni type admin password pass permission RW" -s='>'
 
 ```
 searchPattern: >
@@ -25,13 +25,13 @@ output:  add user indeni type admin password pass permission RW
 ADVHMASAFEPORT197-57>
 ```
 
-goex-gaia -user="admin@10.198.2.1" -pass='' -expert='' -cmd="fw fetch" -search='Done.'
+repsih -u="10.198.2.1" -p='' -e='' -c="fw fetch" -s='Done.'
 
-goex-gaia -user="admin@10.199.16.1" -pass='' -cmd="show software-version" -search=' - '
+repsih -u="10.199.16.1" -p='' -c="show software-version" -s=' - '
 
-goex-gaia -user="admin@10.199.16.1" -pass='' -expert='' -cmd="fw tab -t string_dictionary_table -x -y" -search='Clearing'
+repsih -u="10.199.16.1" -p='' -e='' -c="fw tab -t string_dictionary_table -x -y" -s='Clearing'
 
-$ goex-gaia -user="admin@10.199.16.1" -pass='' -expert='' -cmd="fw tab -t string_dictionary_table -x -y; fw fetch" -search='Done.'
+$ repsih -a="10.199.16.1" -p='' -e='' -c="fw tab -t string_dictionary_table -x -y; fw fetch" -s='Done.'
 
 ```
 2016/08/14 08:53:58 ssh admin@10.199.16.1
@@ -52,7 +52,7 @@ result: [Done.]
 ```
 
 and for bash user (no expert mode):
-./goex-gaia -user="admin@10.199.107.1" -pass='' -cmd="fw tab -t string_dictionary_table -x -y; fw fetch" -search='Done.' -prompt1='#' -timeout='120'
+./repsih -a="10.199.107.1" -p='' -c="fw tab -t string_dictionary_table -x -y; fw fetch" -search='Done.' -p1='#' -t='120'
 
 ```
 2016/08/14 09:16:28 ssh admin@10.199.107.1
@@ -80,16 +80,16 @@ addr:192.168.1.150
 To read 'userhost' from file: 
 
 ```
-$ cat goex-gaia.sh
+$ cat repsih.sh
 #!/bin/bash
 date
 cat pinglist.txt |  while read output
 do
     USERHOST="$1@$output"
     echo $USERHOST
-    ./goex-gaia -user=$USERHOST -pass=''
+    ./repsih -user=$USERHOST -pass=''
 done
-$./goex-gaia.sh admin
+$./repsih.sh admin
 ```
 
 
