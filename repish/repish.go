@@ -48,9 +48,8 @@ func main() {
 	if *OUTPUT != "" {
 		if !pathExists(*OUTPUT) {
 			f, _ = os.Create(*OUTPUT)
-
 		} else {
-			f, _ = os.Open(*OUTPUT)
+			f, _ = os.OpenFile(*OUTPUT, os.O_APPEND, 0666)
 		}
 		defer f.Close()
 	}
