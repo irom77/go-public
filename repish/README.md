@@ -25,11 +25,11 @@ output:  add user indeni type admin password pass permission RW
 ADVHMASAFEPORT197-57>
 ```
 
-repsih -u="10.198.2.1" -p='' -e='' -c="fw fetch" -s='Done.'
+repsih -a="10.198.2.1" -p='' -e='' -c="fw fetch" -s='Done.'
 
-repsih -u="10.199.16.1" -p='' -c="show software-version" -s=' - '
+repsih -a="10.199.16.1" -p='' -c="show software-version" -s=' - '
 
-repsih -u="10.199.16.1" -p='' -e='' -c="fw tab -t string_dictionary_table -x -y" -s='Clearing'
+repsih -a="10.199.16.1" -p='' -e='' -c="fw tab -t string_dictionary_table -x -y" -s='Clearing'
 
 $ repsih -a="10.199.16.1" -p='' -e='' -c="fw tab -t string_dictionary_table -x -y; fw fetch" -s='Done.'
 

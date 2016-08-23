@@ -45,17 +45,14 @@ func init() {
 
 func main() {
 	var f os.File
-	var write bool = false
 	if *OUTPUT != "" {
 		if !pathExists(*OUTPUT) {
-			f, err := os.Create(*OUTPUT)
-			if err == nil {
-				write = true
-			}
-			defer f.Close()
+			f, _ = os.Create(*OUTPUT)
+
+		} else {
+			f, _ = os.Open(*OUTPUT)
 		}
-
-
+		defer f.Close()
 	}
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
@@ -95,7 +92,7 @@ func main() {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			if write == true {
+			if *OUTPUT != "" {
 				f.WriteString(*HOST + "\n")}
 		}
 	}
