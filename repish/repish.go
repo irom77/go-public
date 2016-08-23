@@ -91,6 +91,8 @@ func main() {
 					f.WriteString(*HOST + "\n")
 					f.Close()
 				}
+			} else {
+				fmt.Println("Output File %s does not exist: \n", *OUTPUT)
 			}
 		}
 	}
