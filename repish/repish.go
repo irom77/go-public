@@ -83,6 +83,7 @@ func main() {
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if pathExists(*OUTPUT) {
+				fmt.Printf("Wrting to file %s: ", *OUTPUT)
 				f, _ := os.OpenFile(*OUTPUT, os.O_APPEND, 0666)
 				f.WriteString(*HOST + "\n")
 				f.Close()
