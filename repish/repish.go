@@ -85,8 +85,12 @@ func main() {
 			if pathExists(*OUTPUT) {
 				fmt.Printf("Wrting to file %s: \n", *OUTPUT)
 				f, _ := os.OpenFile(*OUTPUT, os.O_APPEND, 0666)
-				f.WriteString(*HOST + "\n")
-				f.Close()
+				if err != nil {
+					fmt.Println("Error writing to file %s: \n", *OUTPUT)
+				} else {
+					f.WriteString(*HOST + "\n")
+					f.Close()
+				}
 			}
 		}
 	}
