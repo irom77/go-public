@@ -22,6 +22,7 @@ var (
 	TIMEOUT = flag.Int("t", 60, "timeout in sec")
 	SEARCH = flag.String("s", "[>#]", "Search pattern in output")
 	PORT = flag.String("webgui", "4434", "webgui port to test")
+	OUTPUT = flag.String("o", "", "write to file")
 	version = flag.Bool("v", false, "Prints current version")
 )
 var (
@@ -43,6 +44,15 @@ func init() {
 }
 
 func main() {
+	var f os.File
+	if *OUTPUT != "" {
+		if pathExists(*OUTPUT) {
+			f, _ := os.Create(*OUTPUT)
+			defer f.Close()
+		}
+
+
+	}
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
 	if  status != true {
@@ -81,6 +91,7 @@ func main() {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
+			f.WriteString(*HOST + "\n")
 		}
 	}
 	child.Close()
@@ -106,4 +117,11 @@ func RepishSocket(port string) (bool, bool) {
 		status = true
 	}
 	return match, status
+}
+
+func pathExists(path string) (bool) {
+	_, err := os.Stat(path)
+	if err == nil { return true }
+	if os.IsNotExist(err) { return false }
+	return true
 }
