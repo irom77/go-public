@@ -45,9 +45,13 @@ func init() {
 
 func main() {
 	var f os.File
+	var write bool = false
 	if *OUTPUT != "" {
-		if pathExists(*OUTPUT) {
-			f, _ := os.Create(*OUTPUT)
+		if !pathExists(*OUTPUT) {
+			f, err := os.Create(*OUTPUT)
+			if err == nil {
+				write = true
+			}
 			defer f.Close()
 		}
 
@@ -91,7 +95,8 @@ func main() {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			f.WriteString(*HOST + "\n")
+			if write == true {
+				f.WriteString(*HOST + "\n")}
 		}
 	}
 	child.Close()
