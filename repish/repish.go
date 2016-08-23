@@ -44,15 +44,6 @@ func init() {
 }
 
 func main() {
-	var f os.File
-	if *OUTPUT != "" {
-		if !pathExists(*OUTPUT) {
-			f, _ = os.Create(*OUTPUT)
-		} else {
-			f, _ = os.OpenFile(*OUTPUT, os.O_APPEND, 0666)
-		}
-		defer f.Close()
-	}
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
 	if  status != true {
@@ -91,8 +82,11 @@ func main() {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			if *OUTPUT != "" {
-				f.WriteString(*HOST + "\n")}
+			if pathExists(*OUTPUT) {
+				f, _ := os.OpenFile(*OUTPUT, os.O_APPEND, 0666)
+				f.WriteString(*HOST + "\n")
+				f.Close()
+			}
 		}
 	}
 	child.Close()
@@ -126,3 +120,4 @@ func pathExists(path string) (bool) {
 	if os.IsNotExist(err) { return false }
 	return true
 }
+
