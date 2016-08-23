@@ -8,7 +8,6 @@ import (
 	"time"
 	"net"
 	"regexp"
-	"io/ioutil"
 )
 
 var (
