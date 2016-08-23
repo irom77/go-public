@@ -83,16 +83,16 @@ func main() {
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if pathExists(*OUTPUT) {
-				fmt.Printf("Wrting %s to file %s: \n", *HOST, *OUTPUT)
+				fmt.Printf("Wrting %s to file %s\n", *HOST, *OUTPUT)
 				f, _ := os.OpenFile(*OUTPUT, os.O_RDWR|os.O_APPEND, 0666)
 				if err != nil {
-					fmt.Println("Error writing %s to file %s: \n", *HOST,*OUTPUT)
+					fmt.Println("Error writing %s to file %s\n", *HOST,*OUTPUT)
 				} else {
 					f.WriteString(*HOST + "\n")
 					f.Close()
 				}
 			} else {
-				fmt.Println("Output File %s does not exist: \n", *OUTPUT)
+				fmt.Println("Output File %s does not exist\n", *OUTPUT)
 			}
 		}
 	}
