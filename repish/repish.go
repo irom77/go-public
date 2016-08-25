@@ -44,7 +44,7 @@ func init() {
 }
 
 func main() {
-	//now := time.Now()
+	now := time.Now()
 	//fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
@@ -82,18 +82,12 @@ func main() {
 		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-			//if *OUTPUT != "" -> writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() + "login_FAILURE.txt")
+			if pathExists(*OUTPUT) {
+				writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() + "login_FAILURE.txt")
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			//if *OUTPUT != "" -> writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() +"login_SUCCESS.txt")
 			if pathExists(*OUTPUT) {
-				fmt.Printf("Wrting %s to file %s\n", *HOST, *OUTPUT)
-				f, _ := os.OpenFile(*OUTPUT, os.O_RDWR | os.O_APPEND, 0666)
-				if err != nil {
-					fmt.Println("Error writing %s to file %s\n", *HOST, *OUTPUT)
-				} else {
-					f.WriteString(*HOST + "\n")
-					f.Close()
+				writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() +"login_SUCCESS.txt")
 				}
 			}
 		}
@@ -136,6 +130,7 @@ func pathExists(path string) (bool) {
 
 func writeOutput(host, file string) {
 	//https://gist.github.com/novalagung/13c5c8f4d30e0c4bff27
+	createFile(file)
 	fmt.Printf("Wrting %s to file %s\n", host, file)
 	f, err := os.OpenFile(file, os.O_RDWR | os.O_APPEND, 0666)
 	if err != nil {
@@ -143,5 +138,23 @@ func writeOutput(host, file string) {
 	} else {
 		f.WriteString(host + "\n")
 		f.Close()
+	}
+}
+
+func checkError(err error) {
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(0)
+	}
+}
+
+func createFile(file string) {
+	// detect if file exists
+	var _, err = os.Stat(file)
+	// create file if not exists
+	if os.IsNotExist(err) {
+		var file, err = os.Create(file)
+		checkError(err)
+		defer file.Close()
 	}
 }
