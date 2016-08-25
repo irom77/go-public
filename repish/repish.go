@@ -8,6 +8,7 @@ import (
 	"time"
 	"net"
 	"regexp"
+	"strconv"
 )
 
 var (
@@ -45,6 +46,7 @@ func init() {
 
 func main() {
 	now := time.Now()
+	day := strconv.Itoa(now.YearDay())
 	//fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
@@ -83,12 +85,12 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 			if *OUTPUT != "" {
-				writeOutput(*HOST, *OUTPUT + "_" + now.YearDay() + "login_FAILURE.txt")
+				writeOutput(*HOST, *OUTPUT + "_" + day + "login_FAILURE.txt")
 			}
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if *OUTPUT != "" {
-			writeOutput(*HOST, *OUTPUT + "_" + now.YearDay() +"login_SUCCESS.txt")
+			writeOutput(*HOST, *OUTPUT + "_" + day +"login_SUCCESS.txt")
 				}
 		}
 	}
