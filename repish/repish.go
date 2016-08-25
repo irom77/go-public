@@ -44,9 +44,11 @@ func init() {
 }
 
 func main() {
+	now := time.Now()
+	fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
-	if  status != true {
+	if status != true {
 		//log.Println("Can't connect")
 		os.Exit(0)
 	}
@@ -62,13 +64,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	child.Expect("password:")
+	child.Expect("assword:")
 	child.SendLine(*PASS)
 	child.Expect(PROMPT)
 	if *EXPERT != "" {
 		PROMPT = *PROMPT2
 		child.SendLine("expert")
-		child.Expect("password:")
+		child.Expect("assword:")
 		child.SendLine(*EXPERT)
 		child.Expect(PROMPT)
 	}
@@ -80,13 +82,15 @@ func main() {
 		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
+			//if *OUTPUT != "" -> writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() + "login_FAILURE.txt")
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
+			//if *OUTPUT != "" -> writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() +"login_SUCCESS.txt")
 			if pathExists(*OUTPUT) {
 				fmt.Printf("Wrting %s to file %s\n", *HOST, *OUTPUT)
-				f, _ := os.OpenFile(*OUTPUT, os.O_RDWR|os.O_APPEND, 0666)
+				f, _ := os.OpenFile(*OUTPUT, os.O_RDWR | os.O_APPEND, 0666)
 				if err != nil {
-					fmt.Println("Error writing %s to file %s\n", *HOST,*OUTPUT)
+					fmt.Println("Error writing %s to file %s\n", *HOST, *OUTPUT)
 				} else {
 					f.WriteString(*HOST + "\n")
 					f.Close()
@@ -121,8 +125,23 @@ func RepishSocket(port string) (bool, bool) {
 
 func pathExists(path string) (bool) {
 	_, err := os.Stat(path)
-	if err == nil { return true }
-	if os.IsNotExist(err) { return false }
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
 	return true
 }
 
+func writeOutput(host, file string) {
+	//https://gist.github.com/novalagung/13c5c8f4d30e0c4bff27
+	fmt.Printf("Wrting %s to file %s\n", host, file)
+	f, err := os.OpenFile(file, os.O_RDWR | os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println("Error writing %s to file %s\n", host, file)
+	} else {
+		f.WriteString(host + "\n")
+		f.Close()
+	}
+}
