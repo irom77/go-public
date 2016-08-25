@@ -31,7 +31,7 @@ func main() {
 	ssh.SendLn(*CMD)
 	match, _ := ssh.Expect(*PROMPT) // Wait for prompt
 	fmt.Println(match.Before)
-
+	fmt.Println("Completed")
 	// Hit a timeout
 	//ssh.SendLn("sleep 10") // This will cause a timeout
 	//ssh.Expect(PROMPT) // This will timeout
