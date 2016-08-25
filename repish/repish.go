@@ -83,12 +83,12 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
 			if *OUTPUT != "" {
-				writeOutput(*HOST, *OUTPUT + "_" + now.YearDay().String() + "login_FAILURE.txt")
+				writeOutput(*HOST, *OUTPUT + "_" + now.YearDay() + "login_FAILURE.txt")
 			}
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if *OUTPUT != "" {
-			writeOutput(*HOST, *OUTPUT + "_" + now.YearDay().String() +"login_SUCCESS.txt")
+			writeOutput(*HOST, *OUTPUT + "_" + now.YearDay() +"login_SUCCESS.txt")
 				}
 		}
 	}
