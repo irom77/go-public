@@ -45,7 +45,7 @@ func init() {
 
 func main() {
 	now := time.Now()
-	fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
+	//fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
 	if status != true {
@@ -82,14 +82,14 @@ func main() {
 		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-			if pathExists(*OUTPUT) {
-				writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() + "login_FAILURE.txt")
+			if *OUTPUT != "" {
+				writeOutput(*HOST, *OUTPUT + "_" + now.YearDay().String() + "login_FAILURE.txt")
+			}
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
-			if pathExists(*OUTPUT) {
-				writeOutput(*HOST, *OUTPUT + "_" + now.Weekday().String() +"login_SUCCESS.txt")
+			if *OUTPUT != "" {
+			writeOutput(*HOST, *OUTPUT + "_" + now.YearDay().String() +"login_SUCCESS.txt")
 				}
-			}
 		}
 	}
 	child.Close()
