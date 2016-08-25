@@ -45,7 +45,7 @@ func init() {
 
 func main() {
 	now := time.Now()
-	fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
+	//fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
 	if status != true {
