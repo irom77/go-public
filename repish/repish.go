@@ -8,7 +8,6 @@ import (
 	"time"
 	"net"
 	"regexp"
-	"strconv"
 )
 
 var (
@@ -45,8 +44,8 @@ func init() {
 }
 
 func main() {
-	now := time.Now()
-	day := strconv.Itoa(now.YearDay())
+	//now := time.Now()
+	//day := strconv.Itoa(now.YearDay())
 	//fmt.Println("Week and Year day : ", now.Weekday().String(), now.YearDay())
 	port := *PORT //1100/1400 webgui port
 	match, status := RepishSocket(port)
