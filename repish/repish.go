@@ -52,9 +52,6 @@ func main() {
 	match, status := RepishSocket(port)
 	if status != true {
 		//log.Println("Can't connect")
-		if *OUTPUT != "" {
-			writeOutput(*HOST, *OUTPUT + "_" + day +"_FAILURE.txt")
-		}
 		os.Exit(0)
 	}
 	if match == true {
@@ -90,7 +87,7 @@ func main() {
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if *OUTPUT != "" {
-			writeOutput(*HOST, *OUTPUT + "_" + day +"_SUCCESS.txt")
+			writeOutput(*HOST, *OUTPUT)
 				}
 		}
 	}
