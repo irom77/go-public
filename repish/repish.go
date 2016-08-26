@@ -52,6 +52,9 @@ func main() {
 	match, status := RepishSocket(port)
 	if status != true {
 		//log.Println("Can't connect")
+		if *OUTPUT != "" {
+			writeOutput(*HOST, *OUTPUT + "_" + day +"_FAILURE.txt")
+		}
 		os.Exit(0)
 	}
 	if match == true {
@@ -84,13 +87,10 @@ func main() {
 		result, out, err := child.ExpectTimeoutRegexFindWithOutput(searchPattern, timeout)
 		if err != nil {
 			fmt.Printf("Error %v\nsearchPattern: %v\noutput: %v\nresult: %v\n", err, searchPattern, out, result)
-			if *OUTPUT != "" {
-				writeOutput(*HOST, *OUTPUT + "_" + day + "login_FAILURE.txt")
-			}
 		} else {
 			fmt.Printf("searchPattern: %v\noutput: %v\nresult: %v\n", searchPattern, out, result)
 			if *OUTPUT != "" {
-			writeOutput(*HOST, *OUTPUT + "_" + day +"login_SUCCESS.txt")
+			writeOutput(*HOST, *OUTPUT + "_" + day +"_SUCCESS.txt")
 				}
 		}
 	}
