@@ -20,7 +20,7 @@ var (
 var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt or '193'") // 'all', '/path/file' or i.e. '193'
 	PINGCOUNT = flag.String("c", "1", "ping count")
-	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
+	PINGTIMEOUT = flag.String("w", "1", "ping timout in s")
 	version = flag.Bool("v", false, "Prints current version")
 )
 
@@ -83,12 +83,12 @@ func main() {
 	if runtime.GOOS == "windows" {
 		fmt.Println("Windows OS detected")
 		os = "-n"
-		timeout = *PINGTIMEOUT
+		timeout = *PINGTIMEOUT + "000"
 	}
 	if runtime.GOOS == "linux" {    // also can be specified to FreeBSD
 		fmt.Println("Unix/Linux type OS detected")
 		os = "-c"
-		timeout = *PINGTIMEOUT/1000
+		timeout = *PINGTIMEOUT
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
 	fmt.Printf("\ntimeout=%sms %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
