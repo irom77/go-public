@@ -1,5 +1,6 @@
 package main
 //go build -ldflags "-X main.Version=0.1 -X main.BuildTime=10/14/2016" github.com\irom77\go-public\gping
+//discussed http://stackoverflow.com/questions/40049884/golang-sync-waitgroup-doesnt-complete-on-linux/40051153#40051153
 import (
 	"flag"
 	"fmt"
@@ -91,7 +92,7 @@ func main() {
 		timeout = *PINGTIMEOUT
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%sms %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
+	fmt.Printf("\ntimeout=%sms %s counter=%s \n", timeout, os, *PINGCOUNT)
 	//os.Exit(1)
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
