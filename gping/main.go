@@ -78,11 +78,11 @@ func main() {
 	}
 	var os string
 	if runtime.GOOS == "windows" {
-		fmt.Println("Windows OS detected\n")
+		fmt.Println("Windows OS detected")
 		os = "-n"
 	}
 	if runtime.GOOS == "linux" {    // also can be specified to FreeBSD
-		fmt.Println("Unix/Linux type OS detected\n")
+		fmt.Println("Unix/Linux type OS detected")
 		os = "-c"
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
