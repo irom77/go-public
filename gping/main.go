@@ -89,8 +89,7 @@ func main() {
 	fmt.Printf("\ntimeout=%sms %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
 	//os.Exit(1)
 	var wg sync.WaitGroup
-	//wg.Add(len(hosts))
-	wg.Add(2000)
+	wg.Add(len(hosts))
 	start := time.Now()
 	runtime.GOMAXPROCS(MaxParallelism())
 	for _, ip := range hosts {
