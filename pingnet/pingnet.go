@@ -15,7 +15,7 @@ var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt") // 'all', '/path/file' or i.e. '193'
 	CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
 	PINGCOUNT = flag.String("c", "1", "ping count)")
-	PINGTIMEOUT = flag.String("w", "1", "ping timout in s")
+	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("print", true, "print to console")
 )
@@ -78,13 +78,13 @@ func list1s(limit2 int) []string {
 func main() {
 	var hosts []string
 	if *HOSTS == "all" {
-		hosts = delete_empty(list1s(211))
+		hosts = delete_empty(list1s(208))
 		//fmt.Println(hosts, len(hosts))
 	} else if num, err := strconv.Atoi(*HOSTS); err == nil {
-		if (192 < num) && (num <= 256) {
+		if (192 < num) && (num <= 208) {
 			hosts = delete_empty(list1s(num))
 		} else {
-			hosts = delete_empty(list1s(211))
+			hosts = delete_empty(list1s(208))
 		}
 	} else if pathExists(*HOSTS) {
 		lines, err := readHosts(*HOSTS)
