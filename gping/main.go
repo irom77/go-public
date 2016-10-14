@@ -83,7 +83,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
 	start := time.Now()
-	runtime.GOMAXPROCS(MaxParallelism())
+	//runtime.GOMAXPROCS(MaxParallelism())
 	var os string
 	if runtime.GOOS == "windows" {
 		fmt.Println("Windows OS detected\n")
