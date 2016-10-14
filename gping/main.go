@@ -102,7 +102,6 @@ func main() {
 }
 
 func ping(ip string, wg *sync.WaitGroup, os string ) {
-	defer wg.Done()
 	//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 	//result , err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
 	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
@@ -114,7 +113,7 @@ func ping(ip string, wg *sync.WaitGroup, os string ) {
 	} else {
 		//fmt.Printf("%s is dead\n", ip)
 	}
-	//wg.Done()
+	wg.Done()
 }
 
 func delete_empty(s []string) []string {
