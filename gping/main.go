@@ -117,7 +117,7 @@ func ping(ip string, wg *sync.WaitGroup, os string, timeout string ) {
 		count++
 		fmt.Printf("%d %s \n", count, ip)
 	} else {
-		fmt.Printf("%s is dead\n", ip)
+		//fmt.Printf("%s is dead\n", ip)
 	}
 	wg.Done()
 }
