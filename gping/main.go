@@ -91,7 +91,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
 	start := time.Now()
-	//runtime.GOMAXPROCS(MaxParallelism())
+	runtime.GOMAXPROCS(MaxParallelism())
 	for _, ip := range hosts {
 		go ping(ip, &wg, os)
 		//fmt.Println("sent: ", ip)
