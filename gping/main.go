@@ -92,7 +92,7 @@ func main() {
 		timeout = *PINGTIMEOUT
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%sms %s counter=%s \n", timeout, os, *PINGCOUNT)
+	fmt.Printf("\ntimeout=%ss %s counter=%s \n", timeout, os, *PINGCOUNT)
 	//os.Exit(1)
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
@@ -110,14 +110,14 @@ func main() {
 func ping(ip string, wg *sync.WaitGroup, os string, timeout string ) {
 	//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 	//result , err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
-	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", timeout, ip).Output()
+	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
 	//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
 	//fmt.Printf("%s\n", result)
 	if err == nil {
 		count++
 		fmt.Printf("%d %s \n", count, ip)
 	} else {
-		//fmt.Printf("%s is dead\n", ip)
+		fmt.Printf("%s is dead\n", ip)
 	}
 	wg.Done()
 }
