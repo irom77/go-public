@@ -104,14 +104,14 @@ func main() {
 func ping(ip string, wg *sync.WaitGroup, os string ) {
 	//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 	//result , err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
-	_ , err := exec.Command("ping",os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
+	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
 	//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
 	//fmt.Printf("%s\n", result)
 	if err == nil {
 		count++
 		fmt.Printf("%d %s \n", count, ip)
 	} else {
-		//fmt.Printf("%s is dead\n", ip)
+		fmt.Printf("%s is dead\n", ip)
 	}
 	wg.Done()
 }
