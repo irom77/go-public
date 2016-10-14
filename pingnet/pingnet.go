@@ -14,8 +14,8 @@ import (
 var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt") // 'all', '/path/file' or i.e. '193'
 	CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
-	PINGCOUNT = flag.String("c", "-c 1", "ping count (-n 1 for Win)")
-	PINGTIMEOUT = flag.String("w", "-w 1", "ping timout in s")
+	PINGCOUNT = flag.String("c", "1", "ping count)")
+	PINGTIMEOUT = flag.String("w", "1", "ping timout in s")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("print", true, "print to console")
 )
@@ -39,7 +39,7 @@ func init() {
 func ping(pingChan <-chan string, pongChan chan <- string) {
 	for ip := range pingChan {
 		//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
-		_, err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
+		_, err := exec.Command("ping", "-n", *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
 		//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
 		if err == nil {
 			pongChan <- ip
@@ -90,7 +90,7 @@ func main() {
 		lines, err := readHosts(*HOSTS)
 		hosts = delete_empty(lines)
 		if err != nil {
-			fmt.Println("Error reading file %s", *HOSTS)
+			fmt.Println("Error reading file", *HOSTS)
 		}
 	} else {
 		fmt.Println(*HOSTS)
