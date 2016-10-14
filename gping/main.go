@@ -83,7 +83,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
 	start := time.Now()
-	//runtime.GOMAXPROCS(MaxParallelism())
+	runtime.GOMAXPROCS(MaxParallelism())
 	var os string
 	if runtime.GOOS == "windows" {
 		fmt.Println("Windows OS detected\n")
@@ -99,7 +99,7 @@ func main() {
 	}
 	wg.Wait()
 	//fmt.Printf("RESULT: %d/%d", count, len(hosts))
-	fmt.Printf("RESULT: %d in %.2fs (%d CPUs)", count, time.Since(start).Seconds(),MaxParallelism())
+	fmt.Printf("RESULT: %d in %.2fs (%d CPUs)\n", count, time.Since(start).Seconds(),MaxParallelism())
 }
 
 func ping(ip string, wg *sync.WaitGroup, os string ) {
