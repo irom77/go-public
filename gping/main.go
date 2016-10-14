@@ -76,14 +76,6 @@ func main() {
 		fmt.Println("Input param error: ", *HOSTS)
 		os.Exit(0)
 	}
-
-	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%ss counter=%s\n", *PINGTIMEOUT, *PINGCOUNT)
-	//os.Exit(1)
-	var wg sync.WaitGroup
-	wg.Add(len(hosts))
-	start := time.Now()
-	//runtime.GOMAXPROCS(MaxParallelism())
 	var os string
 	if runtime.GOOS == "windows" {
 		fmt.Println("Windows OS detected\n")
@@ -93,6 +85,13 @@ func main() {
 		fmt.Println("Unix/Linux type OS detected\n")
 		os = "-c"
 	}
+	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
+	fmt.Printf("\ntimeout=%ss counter=%s %s\n", *PINGTIMEOUT, *PINGCOUNT, os)
+	//os.Exit(1)
+	var wg sync.WaitGroup
+	wg.Add(len(hosts))
+	start := time.Now()
+	//runtime.GOMAXPROCS(MaxParallelism())
 	for _, ip := range hosts {
 		go ping(ip, &wg, os)
 		//fmt.Println("sent: ", ip)
