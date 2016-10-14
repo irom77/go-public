@@ -20,7 +20,7 @@ var (
 var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt or '193'") // 'all', '/path/file' or i.e. '193'
 	PINGCOUNT = flag.String("c", "2", "ping count")
-	PINGTIMEOUT = flag.String("w", "1", "ping timout in s")
+	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
 	version = flag.Bool("v", false, "Prints current version")
 )
 
@@ -86,7 +86,7 @@ func main() {
 		os = "-c"
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%ss %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
+	fmt.Printf("\ntimeout=%sms %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
 	//os.Exit(1)
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
