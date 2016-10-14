@@ -76,14 +76,19 @@ func main() {
 		fmt.Println("Input param error: ", *HOSTS)
 		os.Exit(0)
 	}
-	var os string
+	var (
+		os string
+		timeout string
+	)
 	if runtime.GOOS == "windows" {
 		fmt.Println("Windows OS detected")
 		os = "-n"
+		timeout = *PINGTIMEOUT
 	}
 	if runtime.GOOS == "linux" {    // also can be specified to FreeBSD
 		fmt.Println("Unix/Linux type OS detected")
 		os = "-c"
+		timeout = *PINGTIMEOUT/1000
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
 	fmt.Printf("\ntimeout=%sms %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
@@ -93,7 +98,7 @@ func main() {
 	start := time.Now()
 	runtime.GOMAXPROCS(MaxParallelism())
 	for _, ip := range hosts {
-		go ping(ip, &wg, os)
+		go ping(ip, &wg, os, timeout)
 		//fmt.Println("sent: ", ip)
 	}
 	wg.Wait()
@@ -101,12 +106,12 @@ func main() {
 	fmt.Printf("RESULT: %d in %.2fs (%d CPUs)\n", count, time.Since(start).Seconds(),MaxParallelism())
 }
 
-func ping(ip string, wg *sync.WaitGroup, os string ) {
+func ping(ip string, wg *sync.WaitGroup, os string, timeout string ) {
 	//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 	//result , err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
-	result , err := exec.Command("ping", os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
+	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", timeout, ip).Output()
 	//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
-	fmt.Printf("%s\n", result)
+	//fmt.Printf("%s\n", result)
 	if err == nil {
 		count++
 		fmt.Printf("%d %s \n", count, ip)
