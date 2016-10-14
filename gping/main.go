@@ -92,7 +92,7 @@ func main() {
 		timeout = *PINGTIMEOUT
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%ss %s counter=%s \n", timeout, os, *PINGCOUNT)
+	fmt.Printf("\ntimeout=%ss %s counter=%s \n", *PINGTIMEOUT, os, *PINGCOUNT)
 	//os.Exit(1)
 	var wg sync.WaitGroup
 	wg.Add(len(hosts))
