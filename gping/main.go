@@ -19,7 +19,7 @@ var (
 
 var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt or '193'") // 'all', '/path/file' or i.e. '193'
-	PINGCOUNT = flag.String("c", "2", "ping count")
+	PINGCOUNT = flag.String("c", "1", "ping count")
 	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
 	version = flag.Bool("v", false, "Prints current version")
 )
