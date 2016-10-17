@@ -99,7 +99,7 @@ func main() {
 	start := time.Now()
 	runtime.GOMAXPROCS(MaxParallelism())
 	for _, ip := range hosts {
-		go ping(ip, &wg, os, timeout)
+		go ping(ip, &wg, os, timeout)  // timeout unused ???
 		//fmt.Println("sent: ", ip)
 	}
 	wg.Wait()
@@ -110,7 +110,7 @@ func main() {
 func ping(ip string, wg *sync.WaitGroup, os string, timeout string ) {
 	//_, err := exec.Command("ping", "-c 1", "-w 1", ip).Output()  //Linux
 	//result , err := exec.Command("ping", *PINGCOUNT, *PINGTIMEOUT, ip).Output()
-	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()
+	_ , err := exec.Command("ping", os, *PINGCOUNT, "-w", timeout, ip).Output()
 	//_, err := exec.Command("ping", "-n 1", "-w 1", ip).Output()
 	//fmt.Printf("%s\n", result)
 	if err == nil {
