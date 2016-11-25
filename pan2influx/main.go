@@ -57,18 +57,18 @@ func main() {
 	}
 	client := &http.Client{Transport: tr}
 
-	for {
+	//for {
 		resp, err := client.Get(URL)
 		if err != nil { log.Fatal(err) }
 
 		htmlData, err := ioutil.ReadAll(resp.Body)
 		/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
 		htmlData, err := ioutil.ReadFile(o)*/
-		resp.Body.Close()
 		if err != nil { log.Fatal(err) }
+		resp.Body.Close()
 
 		//parseGoQuery("dp2 pktlog_forwarding", string(htmlData))
-		for _, dp := range DSP{
+		for _, dp := range DSP {
 			for i:=0; i<= 11; i++ {
 				toInflux(parseGoQuery(dp, "cpu-load-average value", "coreid", i, string(htmlData),"cpu_load"))
 			}
@@ -77,8 +77,9 @@ func main() {
 			}
 		}
 		//defer resp.Body.Close() // close Body when the function returns
-		time.Sleep(*SLEEP * time.Second)
-	}
+		//fmt.Println(time.Now())
+		//time.Sleep(*SLEEP * time.Second)
+	//}
 
 }
 
