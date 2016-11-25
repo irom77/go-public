@@ -34,7 +34,7 @@ func usage(errmsg string) {
 }
 
 func main() {
-	const svcName = "spingservice"
+	const svcName = "rpcservice"
 
 	isIntSess, err := svc.IsAnInteractiveSession()
 	if err != nil {
@@ -55,7 +55,7 @@ func main() {
 		runService(svcName, true)
 		return
 	case "install":
-		err = installService(svcName, "SPING service")
+		err = installService(svcName, "RPC service")
 	case "remove":
 		err = removeService(svcName)
 	case "start":

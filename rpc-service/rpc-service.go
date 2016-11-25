@@ -25,14 +25,13 @@ func (t *Arith) Multiply(args *Args, reply *int) error {
 	*reply = args.A * args.B
 	return nil
 }
-
-func rpchtmlservice() {
+func rpcservice() {
 	arith := new(Arith)
 
 	rpc.Register(arith)
 	rpc.HandleHTTP()
 
-	l, e := net.Listen("tcp", ":1234")
+	l, e := net.Listen("tcp", ":1235")
 	if e != nil {
 		log.Fatal("listen error:", e)
 	}
@@ -41,7 +40,5 @@ func rpchtmlservice() {
 		http.Serve(l, nil)
 	}
 }
-
-
 
 

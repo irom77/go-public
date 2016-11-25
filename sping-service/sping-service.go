@@ -3,10 +3,9 @@ package main
 //discussed http://stackoverflow.com/questions/40049884/golang-sync-waitgroup-doesnt-complete-on-linux/40051153#40051153
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"sync"
-	"time"
+	//"time"
 	"runtime"
 	"log"
 	"net"
@@ -22,38 +21,43 @@ type Args struct {
 }
 type Ping int
 
-func (t *Ping) sping( args *Args, reply *int ) error {
+func (t *Ping) spingtmp( args *Args, reply *int ) error {
 	fmt.Printf("Args received: %+v\n", args)
 	var (
 		os string
 		timeout string
 	)
 	if runtime.GOOS == "windows" {
-		fmt.Println("Windows OS detected")
+		//fmt.Println("Windows OS detected")
 		os = "-n"
-		timeout = Args.ptimeout + "000"
+		timeout = args.ptimeout + "000"
 	}
 	if runtime.GOOS == "linux" {    // also can be specified to FreeBSD
-		fmt.Println("Unix/Linux type OS detected")
+		//fmt.Println("Unix/Linux type OS detected")
 		os = "-c"
-		timeout = Args.ptimeout
+		timeout = args.ptimeout
 	}
 	var wg sync.WaitGroup
-	wg.Add(len(Args.hosts))
-	start := time.Now()
+	wg.Add(len(args.hosts))
+	//start := time.Now()
 	runtime.GOMAXPROCS(MaxParallelism())
-	for _, ip := range Args.hosts {
-		go ping(ip, &wg, os, timeout, Args.pcounter)
+	for _, ip := range args.hosts {
+		go ping(ip, &wg, os, timeout, args.pcounter)
 		//fmt.Println("sent: ", ip)
 	}
 	wg.Wait()
 	//fmt.Printf("RESULT: %d/%d", count, len(hosts))
-	fmt.Printf("RESULT: %d in %.2fs (%d CPUs)\n", count, time.Since(start).Seconds(),MaxParallelism())
+	//fmt.Printf("RESULT: %d in %.2fs (%d CPUs)\n", count, time.Since(start).Seconds(),MaxParallelism())
+	*reply = count
+	return nil
+}
+func (t *Ping) sping( args *Args, reply *int ) error {
+	fmt.Printf("Args received: %+v\n", args)
 	*reply = count
 	return nil
 }
 
-func main() {
+func sping() {
 	ping := new(Ping)
 
 	rpc.Register(ping)

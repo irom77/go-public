@@ -8,7 +8,6 @@ import (
 	"os"
 	"strconv"
 	"bufio"
-	"google.golang.org/api/playmoviespartner/v1"
 )
 
 var (
@@ -63,16 +62,16 @@ func main() {
 		os.Exit(0)
 	}
 	fmt.Printf("hosts=%d -> %s...%s", len(hosts), hosts[0], hosts[len(hosts) - 1])
-	fmt.Printf("\ntimeout=%ss %s counter=%s \n", *PINGTIMEOUT, *PINGCOUNT)
+	fmt.Printf("\ntimeout=%ss counter=%s \n", *PINGTIMEOUT, *PINGCOUNT)
 	//os.Exit(1)
-	client, err := rpc.DialHTTP("tcp", "10.29.21.208:1234")
+	client, err := rpc.DialHTTP("tcp", "10.73.21.208:1234")
 	if err != nil {
 		log.Fatal("dialing:", err)
 	}
 
 	var reply int
 
-	e := client.Call("Arith.sping", &args{hosts, *PINGTIMEOUT, *PINGCOUNT}, &reply)
+	e := client.Call("Ping.sping", &args{hosts, *PINGTIMEOUT, *PINGCOUNT}, &reply)
 	if e != nil {
 		log.Fatalf("Something went wrong: %s", err.Error())
 	}

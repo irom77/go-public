@@ -1,4 +1,4 @@
-package main
+package simplecrawler
 
 import (
 	"net/http"
@@ -15,10 +15,12 @@ var (
 )
 /*
 go-panapi -api="https://10.34.2.149/api/
+go-panapi -api="https://10.34.2.21/esp/restapi.esp?type=op&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>&key="
+
  */
 func init() { flag.Parse() }
 
-func main() {
+func simplecrawler() {
 	flag.Usage = func() {
 		fmt.Printf("Copyright 2016 @IrekRomaniuk. All rights reserved.\n")
 		fmt.Printf("Usage of %s:\n", os.Args[0])
