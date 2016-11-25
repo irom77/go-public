@@ -59,7 +59,7 @@ func main() {
 	resp, err := client.Get(URL)
 	if err != nil { log.Fatal(err) }
 
-	htmlData, err := ioutil.ReadAll(resp.Body) //<--- here!
+	htmlData, err := ioutil.ReadAll(resp.Body)
 	/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
 	htmlData, err := ioutil.ReadFile(o)*/
 	resp.Body.Close()
