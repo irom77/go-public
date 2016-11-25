@@ -1,5 +1,5 @@
 package main
-
+//#nohup ./pan2influx -api="LUFRPT1jRVRDTmo1VVpCZ2wwa3hCU1Roc1pWUVh0VTA9QU5jREpOWVFCaFBXbW5xZ214UU9zQT09" -p="n3w@yn" > /dev/null 2>&1 &
 import (
 	"log"
 	"net/http"
@@ -56,16 +56,17 @@ func main() {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr}
-	resp, err := client.Get(URL)
-	if err != nil { log.Fatal(err) }
-
-	htmlData, err := ioutil.ReadAll(resp.Body)
-	/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
-	htmlData, err := ioutil.ReadFile(o)*/
-	resp.Body.Close()
-	if err != nil { log.Fatal(err) }
 
 	for {
+		resp, err := client.Get(URL)
+		if err != nil { log.Fatal(err) }
+
+		htmlData, err := ioutil.ReadAll(resp.Body)
+		/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
+		htmlData, err := ioutil.ReadFile(o)*/
+		resp.Body.Close()
+		if err != nil { log.Fatal(err) }
+
 		//parseGoQuery("dp2 pktlog_forwarding", string(htmlData))
 		for _, dp := range DSP{
 			for i:=0; i<= 11; i++ {
