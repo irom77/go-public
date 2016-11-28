@@ -15,6 +15,8 @@ import (
 	"os"
 )
 
+const testVersion = 1
+
 var (
 	IP = flag.String("ip", "10.34.2.21", "PAN firewall IP address")
 	SLEEP = flag.Duration("sleep", 60, "Polling time in sec")
@@ -23,6 +25,9 @@ var (
 	DBADDRESS = flag.String("a", "http://10.34.1.100:8086", "InfluxDB address")
 	USERNAME = flag.String("u", "firewall", "InfluxDB username")
 	PASSWORD = flag.String("p", "password", "InfluxDB password")
+	SITE = flag.String("site", "DC1", "Site name")
+	FW = flag.String("fw", "PAN2", "Firewall name")
+	NODEID = flag.String("nodeid", "1", "Firewall node-id")
 	version = flag.Bool("v", false, "Prints current version")
 	//PRINT = flag.Bool("print", true, "print to console")
 )
@@ -45,42 +50,51 @@ func init() {
 }
 
 func main() {
-	const CMD = "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>"
+	//var eth string
+	const CMDres = "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>"
+	//var CMDqos = "&cmd=<show><qos><throughput>" + *NODEID + "</throughput><interface>" + eth + "</interface></qos></show>"
 	var API = "&key=" + *API
 	var IP = "https://" + *IP + "/esp/restapi.esp?type=op"
 	var DSP = []string{"dp0","dp1","dp2"}
+	//var AE = []string{"ae1","ae2","ae3"}
 
-	URL := IP + CMD + API
+	resourceMonitor(DSP, getHTML(IP + CMDres + API))
+	//qosThroughput(AE, getHTML(IP + CMDres + API))
 
+}
+
+/*func qosThroughput () {
+}*/
+
+func getHTML (url string ) string {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr}
+	resp, err := client.Get(url)
+	if err != nil { log.Fatal(err) }
 
-	//for {
-		resp, err := client.Get(URL)
-		if err != nil { log.Fatal(err) }
+	htmlData, err := ioutil.ReadAll(resp.Body)
+	/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
+	htmlData, err := ioutil.ReadFile(o)*/
+	if err != nil { log.Fatal(err) }
+	resp.Body.Close()
+	return string(htmlData)
+}
 
-		htmlData, err := ioutil.ReadAll(resp.Body)
-		/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
-		htmlData, err := ioutil.ReadFile(o)*/
-		if err != nil { log.Fatal(err) }
-		resp.Body.Close()
-
-		//parseGoQuery("dp2 pktlog_forwarding", string(htmlData))
-		for _, dp := range DSP {
-			for i:=0; i<= 11; i++ {
-				toInflux(parseGoQuery(dp, "cpu-load-average value", "coreid", i, string(htmlData),"cpu_load"))
-			}
-			for i:=0; i<= 3; i++ {
-				toInflux(parseGoQuery(dp, "resource-utilization value", "resourceid", i, string(htmlData),"resource_utilization"))
-			}
+func resourceMonitor (DSP []string, htmlData string) {
+	//parseGoQuery("dp2 pktlog_forwarding", string(htmlData))
+	for _, dp := range DSP {
+		for i:=0; i<= 11; i++ {
+			toInflux(parseGoQuery(dp, "cpu-load-average value", "coreid", i, htmlData, "cpu_load"))
 		}
-		//defer resp.Body.Close() // close Body when the function returns
-		//fmt.Println(time.Now())
-		//time.Sleep(*SLEEP * time.Second)
-	//}
-
+		for i:=0; i<= 3; i++ {
+			toInflux(parseGoQuery(dp, "resource-utilization value", "resourceid", i, htmlData, "resource_utilization"))
+		}
+	}
+	//defer resp.Body.Close() // close Body when the function returns
+	//fmt.Println(time.Now())
+	//time.Sleep(*SLEEP * time.Second)
 }
 
 func parseGoQuery(dsp string, t string, id string, i int, b string, p string) (int, string, string, int, string) {
@@ -110,7 +124,7 @@ func toInflux(value int, dsp string, id string, i int, p string) {
 	})
 	if err != nil { log.Fatalln("Error: ", err) }
 	// Create a point and add to batch
-	tags := map[string]string{"dsp": dsp, id:strconv.Itoa(i), "site":"DC1","firewall":"PAN2" }
+	tags := map[string]string{"dsp": dsp, id:strconv.Itoa(i), "site":*SITE,"firewall":*FW }
 	fields := map[string]interface{}{
 		p:   value,
 	}

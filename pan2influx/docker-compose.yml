@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  grafana:
+    build: grafana/
+    ports:
+      - "3003:3003"
+    networks:
+      - influx
+  influx:
+    build: influxdb/
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+      - "8083:8083"
+    networks:
+      - influx
+networks:
+  influx:
+    driver: bridge
