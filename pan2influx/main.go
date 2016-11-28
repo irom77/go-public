@@ -50,16 +50,13 @@ func init() {
 }
 
 func main() {
-	//var eth string
-	const CMDres = "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>"
-	//var CMDqos = "&cmd=<show><qos><throughput>" + *NODEID + "</throughput><interface>" + eth + "</interface></qos></show>"
 	var API = "&key=" + *API
 	var IP = "https://" + *IP + "/esp/restapi.esp?type=op"
 	var DSP = []string{"dp0","dp1","dp2"}
 	//var AE = []string{"ae1","ae2","ae3"}
 
-	resourceMonitor(DSP, getHTML(IP + CMDres + API))
-	//qosThroughput(AE, getHTML(IP + CMDres + API))
+	resourceMonitor(DSP, getHTML(IP + "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>" + API))
+	//qosThroughput(AE, getHTML(IP + "&cmd=<show><qos><throughput>" + *NODEID + "</throughput><interface>" + "ae1" + "</interface></qos></show>" + API))
 
 }
 
