@@ -1,5 +1,5 @@
 package main
-//#nohup ./pan2influx -api="LUFRPT1jRVRDTmo1VVpCZ2wwa3hCU1Roc1pWUVh0VTA9QU5jREpOWVFCaFBXbW5xZ214UU9zQT09" -p="n3w@yn" > /dev/null 2>&1 &
+//#nohup ./pan2influx -api="" -p="" > /dev/null 2>&1 &
 import (
 	"log"
 	"net/http"
