@@ -59,7 +59,7 @@ func main() {
 	go resourceMonitor(DSP, getHTML(IP + "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>" + API))
 	iterate := 4
 	for i:=0; i < iterate; i++ {
-		fmt.Println(i,time.Now().Second())
+		//fmt.Println(i,time.Now().Second())
 		for k, v := range AE {
 			qosThroughput(getHTML(IP + "&cmd=<show><qos><throughput>" + strconv.Itoa(v) + "</throughput><interface>" + k + "</interface></qos></show>" + API),k)
 		}

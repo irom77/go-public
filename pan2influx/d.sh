@@ -24,3 +24,7 @@ docker rm influx
 docker run -d --network influx -p 8083:8083 -p 8086:8086 --name influx -h influx\
       -v $PWD/influxdb:/var/lib/influxdb -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro\
       influxdb -config /etc/influxdb/influxdb.conf
+
+
+#docker build -t  .
+@docker -name pan2influx pan2influx
