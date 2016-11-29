@@ -1,5 +1,0 @@
-<response status="success">
-<result>
-Class 1 0 kbps Class 2 0 kbps Class 3 0 kbps Class 4 130784 kbps Class 5 0 kbps Class 6 0 kbps Class 7 20 kbps Class 8 12 kbps
-</result>
-</response>

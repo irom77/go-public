@@ -13,13 +13,14 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"regexp"
 )
 
 const testVersion = 1
 
 var (
 	IP = flag.String("ip", "10.34.2.21", "PAN firewall IP address")
-	SLEEP = flag.Duration("sleep", 60, "Polling time in sec")
+	//SLEEP = flag.Duration("sleep", 10, "Polling time in sec")
 	API = flag.String("api", "", "PAN firewall API Key")
 	DBNAME = flag.String("d", "firewalls", "InfluxDB name")
 	DBADDRESS = flag.String("a", "http://10.34.1.100:8086", "InfluxDB address")
@@ -27,7 +28,7 @@ var (
 	PASSWORD = flag.String("p", "password", "InfluxDB password")
 	SITE = flag.String("site", "DC1", "Site name")
 	FW = flag.String("fw", "PAN2", "Firewall name")
-	NODEID = flag.String("nodeid", "1", "Firewall node-id")
+	//NODEID = flag.String("nodeid", "1", "Firewall node-id")
 	version = flag.Bool("v", false, "Prints current version")
 	//PRINT = flag.Bool("print", true, "print to console")
 )
@@ -53,15 +54,42 @@ func main() {
 	var API = "&key=" + *API
 	var IP = "https://" + *IP + "/esp/restapi.esp?type=op"
 	var DSP = []string{"dp0","dp1","dp2"}
-	//var AE = []string{"ae1","ae2","ae3"}
+	var AE = map[string]int{"ae1":1,"ae2":0,"ae3":0,}
 
-	resourceMonitor(DSP, getHTML(IP + "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>" + API))
-	//qosThroughput(AE, getHTML(IP + "&cmd=<show><qos><throughput>" + *NODEID + "</throughput><interface>" + "ae1" + "</interface></qos></show>" + API))
+	go resourceMonitor(DSP, getHTML(IP + "&cmd=<show><running><resource-monitor><second></second></resource-monitor></running></show>" + API))
+	iterate := 4
+	for i:=0; i < iterate; i++ {
+		fmt.Println(i,time.Now().Second())
+		for k, v := range AE {
+			qosThroughput(getHTML(IP + "&cmd=<show><qos><throughput>" + strconv.Itoa(v) + "</throughput><interface>" + k + "</interface></qos></show>" + API),k)
+		}
+		time.Sleep(10 * time.Second)
+	}
 
 }
 
-/*func qosThroughput () {
-}*/
+func qosThroughput (htmlData string, netint string) {
+	class, p := parseThroughput("result", htmlData, "qos_throughput")
+	for i, c := range class {
+		s, _ := strconv.Atoi(c)
+		//fmt.Println(s,"int",ae,"class",i, p)
+		toInflux(s,"int",netint,"class",i, p)
+		}
+}
+
+func parseThroughput (tag string, htmlData string, p string) ([]string, string) {
+	r := regexp.MustCompile("[^\\s]+")
+	htmlCode := strings.NewReader(htmlData)
+	doc, err := goquery.NewDocumentFromReader(htmlCode)
+	if err != nil { log.Fatal(err) }
+	//s := strings.Split(doc.Find(tag).Text()," ")
+	s := r.FindAllString(doc.Find(tag).Text(),-1)
+	class := []string{}
+	for i:=2;i<=30;i+=4 {
+		class = append(class,s[i])
+	}
+	return class, p
+}
 
 func getHTML (url string ) string {
 	tr := &http.Transport{
@@ -70,7 +98,6 @@ func getHTML (url string ) string {
 	client := &http.Client{Transport: tr}
 	resp, err := client.Get(url)
 	if err != nil { log.Fatal(err) }
-
 	htmlData, err := ioutil.ReadAll(resp.Body)
 	/*o := "C:\\Users\\irekromaniuk\\Vagrant\\trusty64\\src\\github.com\\irom77\\go-public\\pan2influx\\output.txt"
 	htmlData, err := ioutil.ReadFile(o)*/
@@ -83,10 +110,10 @@ func resourceMonitor (DSP []string, htmlData string) {
 	//parseGoQuery("dp2 pktlog_forwarding", string(htmlData))
 	for _, dp := range DSP {
 		for i:=0; i<= 11; i++ {
-			toInflux(parseGoQuery(dp, "cpu-load-average value", "coreid", i, htmlData, "cpu_load"))
+			toInflux(parseResourceMonitor("dsp", dp, "cpu-load-average value", "coreid", i, htmlData, "cpu_load"))
 		}
 		for i:=0; i<= 3; i++ {
-			toInflux(parseGoQuery(dp, "resource-utilization value", "resourceid", i, htmlData, "resource_utilization"))
+			toInflux(parseResourceMonitor("dsp", dp, "resource-utilization value", "resourceid", i, htmlData, "resource_utilization"))
 		}
 	}
 	//defer resp.Body.Close() // close Body when the function returns
@@ -94,7 +121,7 @@ func resourceMonitor (DSP []string, htmlData string) {
 	//time.Sleep(*SLEEP * time.Second)
 }
 
-func parseGoQuery(dsp string, t string, id string, i int, b string, p string) (int, string, string, int, string) {
+func parseResourceMonitor(tagid string, dsp string, t string, id string, i int, b string, p string) (int, string, string, string, int, string) {
 	tag := dsp + " " + t
 	htmlCode := strings.NewReader(b)
 	doc, err := goquery.NewDocumentFromReader(htmlCode)
@@ -103,10 +130,10 @@ func parseGoQuery(dsp string, t string, id string, i int, b string, p string) (i
 	doc.Find(tag).Each(func(_ int, s *goquery.Selection) {  //resource-utilization
 		content = append(content,s.Text())
 	})
-	return getMax(strings.Split(content[i],",")), dsp, id, i, p
+	return getMax(strings.Split(content[i],",")), tagid, dsp, id, i, p
 }
 
-func toInflux(value int, dsp string, id string, i int, p string) {
+func toInflux(value int, tagid string, tag string, id string, i int, p string) {
 	// Make client
 	c, err := client.NewHTTPClient(client.HTTPConfig{
 		Addr: *DBADDRESS,
@@ -121,7 +148,7 @@ func toInflux(value int, dsp string, id string, i int, p string) {
 	})
 	if err != nil { log.Fatalln("Error: ", err) }
 	// Create a point and add to batch
-	tags := map[string]string{"dsp": dsp, id:strconv.Itoa(i), "site":*SITE,"firewall":*FW }
+	tags := map[string]string{tagid:tag, id:strconv.Itoa(i), "site":*SITE,"firewall":*FW }
 	fields := map[string]interface{}{
 		p:   value,
 	}

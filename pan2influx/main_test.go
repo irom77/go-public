@@ -1,7 +1,11 @@
 package main
 
 
-import "testing"
+import (
+	"testing"
+	"github.com/influxdata/influxdb/client/v2"
+	"fmt"
+)
 const targetTestVersion = 1
 var (
 	max int
@@ -9,15 +13,16 @@ var (
 )
 
 var GoQueryTests = []struct {
+	tag string
 	dsp string
 	t string
 	id int
 	max int
 }{
-	{"dp2", "cpu-load-average value", 0, 89},
-	{"dp1", "resource-utilization value", 1, 20},
-	{"dp1", "resource-utilization value", 0, 12},
-	{"dp0", "cpu-load-average value", 2, 57},
+	{"dsp", "dp2", "cpu-load-average value", 0, 89},
+	{"dsp", "dp1", "resource-utilization value", 1, 20},
+	{"dsp", "dp1", "resource-utilization value", 0, 12},
+	{"dsp", "dp0", "cpu-load-average value", 2, 57},
 
 }
 func TestParseGoQuery (t *testing.T) {
@@ -25,11 +30,70 @@ func TestParseGoQuery (t *testing.T) {
 		t.Fatalf("Found testVersion = %v, want %v", testVersion, targetTestVersion)
 	}
 	for _, test := range GoQueryTests {
-		max, dsp, _, _, _ = parseGoQuery(test.dsp, test.t, "whatever", test.id, htmlData, "whatever")
+		max, _, dsp, _, _, _ = parseResourceMonitor(test.tag, test.dsp, test.t, "whatever", test.id, htmlData, "whatever")
 		if  max != test.max || dsp != test.dsp {
-			t.Fatalf("%s %s %d: got %s %d, want %s %d", test.dsp, test.t, test.id, dsp, max, test.dsp, test.max )
+			t.Fatalf("%s %s %s %d: got %s %d, want %s %d",test.tag, test.dsp, test.t, test.id, dsp, max, test.dsp, test.max )
 		}
 	}
+
+}
+
+func TestQosThroughput (t *testing.T) {
+	class, _ := parseThroughput("result",HTMLThroughput2,"whatever")
+	//fmt.Println(class)
+	if class[3] != "130784" {
+		t.Fatalf("got %s, want %s",class[3],"130784"  )
+	}
+}
+
+var GoInfluxTests = []struct {
+	field string
+	value int
+	tag string
+	id int
+	limit int
+}{
+	{"TestMeasurement",44,"TESTid",99,1},
+
+}
+
+func TestToInflux (t *testing.T) {
+	//value int, tagid string, tag string, id string, i int, p string
+	toInflux(44,"TEST","TESTdsp","TESTid",199,"TestMeasurement") //"TestToInfluxValue":44,"TEST":"dpTEST","id":0,"site":*SITE,"firewall":*FW
+	//select * from Test_Measurement where TESTid='99' limit 1
+	q := fmt.Sprintf("SELECT * FROM %s WHERE %s AND time > now() - 3s LIMIT %d", "TestMeasurement","TESTid='199'", 1)
+	//fmt.Println(q)
+	// Make client
+	client, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: *DBADDRESS,
+		Username: *USERNAME,
+		Password: *PASSWORD,
+	})
+	if err != nil { t.Fatalf("Error: ", err) }
+	defer client.Close()
+	res, err := queryDB(client, q)
+	if err != nil { t.Fatalf("Error: ", err) }
+	read := res[0].Series[0].Values[0][2]
+	if read != "199" {
+		t.Fatalf("Influx: read %s, wrote %s", read,"199")
+	}
+
+}
+
+func queryDB(clnt client.Client, cmd string) (res []client.Result, err error) {
+	q := client.Query{
+		Command:  cmd,
+		Database: *DBNAME,
+	}
+	if response, err := clnt.Query(q); err == nil {
+		if response.Error() != nil {
+			return res, response.Error()
+		}
+		res = response.Results
+	} else {
+		return res, err
+	}
+	return res, nil
 }
 
 var htmlData = `<response status="success"><result>
@@ -456,11 +520,21 @@ var htmlData = `<response status="success"><result>
 </resource-monitor>
 </result></response>`
 
-var throughput = `<response status="success">
+var HTMLThroughput1 = `<response status="success">
 <result>
 Class 1 0 kbps Class 2 0 kbps Class 3 0 kbps Class 4 130784 kbps Class 5 0 kbps Class 6 0 kbps Class 7 20 kbps Class 8 12 kbps
 </result>
 </response>`
+
+var HTMLThroughput2 = `<response status="success"><result>Class 1              0 kbps
+Class 2              0 kbps
+Class 3              0 kbps
+Class 4         130784 kbps
+Class 5              0 kbps
+Class 6              0 kbps
+Class 7             20 kbps
+Class 8             12 kbps
+</result></response>`
 
 
 
