@@ -76,7 +76,13 @@ func qosThroughput (htmlData string, netint string) {
 		toInflux(s,"int",netint,"class",i, p)
 		}
 }
-
+func parseSessionInfo (tag string, htmlData string, p string) (string, string) {
+	htmlCode := strings.NewReader(htmlData)
+	doc, err := goquery.NewDocumentFromReader(htmlCode)
+	if err != nil { log.Fatal(err) }
+	s := doc.Find(tag).Text()
+	return s, p
+}
 func parseThroughput (tag string, htmlData string, p string) ([]string, string) {
 	r := regexp.MustCompile("[^\\s]+")
 	htmlCode := strings.NewReader(htmlData)

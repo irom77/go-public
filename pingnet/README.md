@@ -1,6 +1,7 @@
 ## go to ping scan
 
 ##### EXAMPLES
+```
 cd $GOPATH/bin
 
 $ go get -u github.com/irom77/go-public/pingnet
@@ -22,4 +23,5 @@ Usage of ./pingnet:
         
 $ ./pingnet -a=200 -r=100 -print=false
 concurrentMax=100 hosts=2048 -> 10.192.0.1...10.199.255.1
-1094    
+1094   
+ ```
