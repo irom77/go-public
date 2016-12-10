@@ -88,7 +88,7 @@ func main() {
 // respond to ping.  The MaxRTT is set to 4 seconds.
 func Ping(hosts []string) int {
 	p := fastping.NewPinger()
-	p.MaxRTT = 1 * time.Second
+	p.MaxRTT = 2 * time.Second
 	var successCount, failCount uint64
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		atomic.AddUint64(&successCount, 1)
