@@ -99,7 +99,7 @@ func Ping(hosts []string) int {
 	}
 	p.OnIdle = func() {
 		atomic.AddUint64(&failCount, 1)
-		fmt.Printf("timed out - finish\nfailCount: %v \n", failCount)
+		fmt.Printf("timed out - finish: failCount: %v \n", failCount)
 	}
 
 	for _, ip := range hosts {
