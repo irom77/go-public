@@ -1,5 +1,8 @@
 package main
-
+/*
+go get -u github.com/irom77/go-public/fastping
+sudo $GOPATH/bin/fastping -a="/home/irek/pinglist.txt"
+ */
 import (
 	"fmt"
 	"time"
@@ -88,7 +91,7 @@ func main() {
 // respond to ping.  The MaxRTT is set to 4 seconds.
 func Ping(hosts []string) int {
 	p := fastping.NewPinger()
-	p.MaxRTT = 4 * time.Second
+	p.MaxRTT = 10 * time.Second
 	var successCount, failCount uint64
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		atomic.AddUint64(&successCount, 1)
