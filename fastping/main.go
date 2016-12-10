@@ -92,11 +92,11 @@ func Ping(hosts []string) int {
 	var successCount, failCount uint64
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		atomic.AddUint64(&successCount, 1)
-		// fmt.Printf("IP Addr: %s receive, RTT: %v  successCount: %v \n", addr.String(), rtt, successCount)
+		fmt.Printf("IP Addr: %s receive, RTT: %v  successCount: %v \n", addr.String(), rtt, successCount)
 	}
 	p.OnIdle = func() {
 		atomic.AddUint64(&failCount, 1)
-		// fmt.Println("timed out - finish")
+		fmt.Println("timed out - finish")
 	}
 
 	for _, ip := range hosts {
