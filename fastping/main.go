@@ -91,7 +91,7 @@ func main() {
 // respond to ping.  The MaxRTT is set to 4 seconds.
 func Ping(hosts []string) int {
 	p := fastping.NewPinger()
-	p.MaxRTT = 10 * time.Second
+	p.MaxRTT = 4 * time.Second
 	var successCount, failCount uint64
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		atomic.AddUint64(&successCount, 1)
@@ -99,7 +99,7 @@ func Ping(hosts []string) int {
 	}
 	p.OnIdle = func() {
 		atomic.AddUint64(&failCount, 1)
-		fmt.Println("timed out - finish")
+		fmt.Printf("timed out - finish\nfailCount: %v \n", failCount)
 	}
 
 	for _, ip := range hosts {
