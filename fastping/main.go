@@ -80,7 +80,7 @@ func main() {
 
 	result := Ping(hosts)
 
-	fmt.Printf("%.2fs %d/%d %d\n", time.Since(start).Seconds(),result,len(hosts))
+	fmt.Printf("%.2fs %d/%d\n", time.Since(start).Seconds(),result,len(hosts))
 
 }
 
