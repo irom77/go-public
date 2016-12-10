@@ -16,7 +16,7 @@ var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt") // 'all', '/path/file' or i.e. '193'
 	//CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
 	//PINGCOUNT = flag.String("c", "1", "ping count)")
-	PINGTIMEOUT = flag.Int("w", 1, "ping timout in s")
+	//PINGTIMEOUT = flag.Int("w", 1, "ping timout in s")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("print", true, "print to console")
 )
@@ -88,7 +88,7 @@ func main() {
 // respond to ping.  The MaxRTT is set to 4 seconds.
 func Ping(hosts []string) int {
 	p := fastping.NewPinger()
-	p.MaxRTT = *PINGTIMEOUT * time.Second
+	p.MaxRTT = 1 * time.Second
 	var successCount, failCount uint64
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
 		atomic.AddUint64(&successCount, 1)
