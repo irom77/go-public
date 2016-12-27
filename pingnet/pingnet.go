@@ -126,7 +126,7 @@ func main() {
 		fmt.Printf("%.2fs %d/%d %d\n", time.Since(start).Seconds(),len(result),len(hosts),concurrentMax)
 	}
 	//pp.Println(len(result))
-	fmt.Printf("pingcount,site=%s,cur=%d total-up=%d", *SITE, concurrentMax, len(result))
+	fmt.Printf("pingcount,site=%s,cur=%d total-up=%d\n", *SITE, concurrentMax, len(result))
 
 }
 
