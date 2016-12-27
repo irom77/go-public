@@ -17,7 +17,7 @@ var (
 	PINGCOUNT = flag.String("c", "1", "ping count)")
 	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
 	version = flag.Bool("v", false, "Prints current version")
-	PRINT = flag.Bool("p", "false", "print metadata")
+	PRINT = flag.Bool("p", false, "print metadata")
 	SITE = flag.String("s", "DC1", "source location tag")
 )
 var (
