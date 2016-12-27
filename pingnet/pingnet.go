@@ -39,7 +39,8 @@ func init() {
 }
 func ping(pingChan <-chan string, pongChan chan <- string) {
 	for ip := range pingChan {
-		_, err := exec.Command("ping", "-c", *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()  //Linux
+		_, err := exec.Command("ping", "-c", *PINGCOUNT, "-W", *PINGTIMEOUT, ip).Output()  //Linux (timenout in s)
+		//_, err := exec.Command("ping", "-n", *PINGCOUNT, "-w", *PINGTIMEOUT, ip).Output()  //Windows (timenout in ms)
 		if err == nil {
 			pongChan <- ip
 		} else {
