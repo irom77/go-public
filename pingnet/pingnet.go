@@ -17,7 +17,8 @@ var (
 	PINGCOUNT = flag.String("c", "1", "ping count)")
 	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
 	version = flag.Bool("v", false, "Prints current version")
-	PRINT = flag.Bool("print", true, "print to console")
+	PRINT = flag.String("p", "", "print format: raw or influx")
+	SITE = flag.String("s", "DC1", "source location tag")
 )
 var (
 	Version = "No Version Provided"
@@ -101,7 +102,9 @@ func main() {
 	pingChan := make(chan string, concurrentMax)
 	pongChan := make(chan string, len(hosts))
 	doneChan := make(chan []string)
-	fmt.Printf("concurrentMax=%d hosts=%d -> %s...%s\n", concurrentMax, len(hosts), hosts[0], hosts[len(hosts) - 1])
+	if *PRINT != "influx" {
+		fmt.Printf("concurrentMax=%d hosts=%d -> %s...%s\n", concurrentMax, len(hosts), hosts[0], hosts[len(hosts) - 1])
+	}
 	start := time.Now()
 	for i := 0; i < concurrentMax; i++ {
 		go ping(pingChan, pongChan)
@@ -115,14 +118,17 @@ func main() {
 	}
 	alives := <-doneChan
 	result := delete_empty(alives)
-	if *PRINT {
+	if *PRINT == "influx" {
+		fmt.Printf("pingscan,site=%s,cur=%d total-up=%d", *SITE, concurrentMax, len(result))
+	} else {
 		//fmt.Println(result)
 		for _, ip := range result {
 			fmt.Println(ip)
-		}
+			}
 		fmt.Printf("%.2fs %d/%d %d\n", time.Since(start).Seconds(),len(result),len(hosts),concurrentMax)
+		pp.Println(len(result))
 	}
-	pp.Println(len(result))
+
 }
 
 func delete_empty(s []string) []string {
