@@ -15,7 +15,7 @@ var (
 	HOSTS = flag.String("a", "all", "destinations to ping, i.e. ./file.txt") // 'all', '/path/file' or i.e. '193'
 	CONCURRENTMAX = flag.Int("r", 200, "max concurrent pings")
 	PINGCOUNT = flag.String("c", "1", "ping count)")
-	PINGTIMEOUT = flag.String("w", "1000", "ping timout in ms")
+	PINGTIMEOUT = flag.String("w", "1", "ping timout in s")
 	version = flag.Bool("v", false, "Prints current version")
 	PRINT = flag.Bool("p", true, "print metadata")
 	SITE = flag.String("s", "DC1", "source location tag")
